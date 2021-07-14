@@ -1,6 +1,4 @@
 #include "mainwindow.h"
-#include "settingscenes.h"
-
 #include <QApplication>
 
 int main(int argc, char *argv[])
