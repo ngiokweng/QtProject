@@ -5,3 +5,4 @@ __路徑中絕對不可以出現中文__
 - [翻金幣項目](https://github.com/ngiokweng/QtProject/tree/master/CoinFlip)
 - [計數器項目](https://github.com/ngiokweng/QtProject/tree/master/Calculator)
 - [五子棋項目(含AI對戰)](https://github.com/ngiokweng/QtProject/tree/master/Gobang)
+- [貪食蛇項目](https://github.com/ngiokweng/QtProject/tree/master/Snake)
