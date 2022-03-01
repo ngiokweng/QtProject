@@ -1,17 +1,36 @@
-#include "menuscene.h"
+#include "MenuScene.h"
 #include "ui_menuscene.h"
 #include <QLabel>
 #include <QDebug>
 #include <QPushButton>
+#include <QDialog>
+#include <LoginScene.h>
+#include <QMessageBox>
 
 MenuScene::MenuScene(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::MenuScene)
 {
     ui->setupUi(this);
+    //設置菜單界面的大小
     this->width = 800;
-    this->hegith = 600;
-    initMenu(this->width,this->hegith);
+    this->height = 600;
+    initMenu(); //初始化菜單界面
+
+    /*讓玩家選擇【是否新用戶】，是則進入注冊界面，反之登錄界面*/
+    QMessageBox::StandardButtons flag = QMessageBox::question(this,"question","是否【新用戶】",QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
+    int mode = REGISTER;
+    if(flag == QMessageBox::No)mode = LOGIN;
+
+    LoginScene* loginScene = new LoginScene(this,600,400,mode);
+
+    // 當loginScene發送backToMenu信號時，就將MenuScene顯示出來
+    connect(loginScene,&LoginScene::backToMenu,[=](){
+        this->show();
+    });
+
+    loginScene->show(); //顯示登錄界面
+
 }
 
 MenuScene::~MenuScene()
@@ -27,10 +46,10 @@ void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,QFont btnFont,int loc_
 }
 
 //初始化菜單選項
-void MenuScene::initMenu(int width,int height){
+void MenuScene::initMenu(){
     /****************** 初始化界面大小和外標題 ******************/
     this->setFixedSize(width,height);
-    this->setWindowTitle("【SuperSnake】");
+    this->setWindowTitle("【SuperSnake】菜單界面");
 
     /****************** 設置內標題文本 ******************/
     QLabel* title = new QLabel("SuperSnake",this);
@@ -44,21 +63,21 @@ void MenuScene::initMenu(int width,int height){
     QSize btn_defaultSize(150,75);
     QFont btn_defaultFont("Adobe 繁黑體 Std B",20);
 
-    /****************** 設置【開始遊戲】按鈕 ******************/
+    /* 設置【開始遊戲】按鈕 */
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
     createBtn(startBtn,btn_defaultSize,btn_defaultFont,title->geometry().y()+title->geometry().height(),30);
     //待實現：連接遊戲場景、遊戲參數設置的窗口
 
-    /****************** 設置【排行榜】按鈕 ******************/
+    /* 設置【排行榜】按鈕 */
     QPushButton* rankBtn = new QPushButton("排行榜",this);
     createBtn(rankBtn,btn_defaultSize,btn_defaultFont,startBtn->geometry().y()+startBtn->geometry().height(),30);
 
 
-    /****************** 設置【個人信息】按鈕 ******************/
+    /* 設置【個人信息】按鈕 */
     QPushButton* selfInfoBtn = new QPushButton("個人信息",this);
     createBtn(selfInfoBtn,btn_defaultSize,btn_defaultFont,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
 
-    /****************** 設置【登出】按鈕 ******************/
+    /* 設置【登出】按鈕 */
     QPushButton* logoutBtn = new QPushButton("登出",this);
     createBtn(logoutBtn,btn_defaultSize,btn_defaultFont,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
 
