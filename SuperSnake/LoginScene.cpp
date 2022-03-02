@@ -58,12 +58,10 @@ void LoginScene::loginAccount(){
             emit this->backToMenu();
             this->close();
             return;
-        }else{
-            QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
-            return;
         }
     }
-
+    // 當遍歷完所有帳戶後，仍未能匹配成功，即代表輸入有誤
+    QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
 
 }
 

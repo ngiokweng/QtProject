@@ -4,8 +4,10 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QDialog>
-#include <LoginScene.h>
+#include "LoginScene.h"
 #include <QMessageBox>
+#include <MapScene.h>
+#include "SettingScene.h"
 
 MenuScene::MenuScene(QWidget *parent)
     : QWidget(parent)
@@ -17,6 +19,12 @@ MenuScene::MenuScene(QWidget *parent)
     this->height = 600;
     initMenu(); //初始化菜單界面
 
+    enterLoginScene();  //進入登錄界面
+
+}
+
+//進入【登錄界面】
+void MenuScene::enterLoginScene(){
     /*讓玩家選擇【是否新用戶】，是則進入注冊界面，反之登錄界面*/
     QMessageBox::StandardButtons flag = QMessageBox::question(this,"question","是否【新用戶】",QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
     int mode = REGISTER;
@@ -24,18 +32,19 @@ MenuScene::MenuScene(QWidget *parent)
 
     LoginScene* loginScene = new LoginScene(this,600,400,mode);
 
-    // 當loginScene發送backToMenu信號時，就將MenuScene顯示出來
+    // 當loginScene發送backToMenu信號時，就返回到MenuScene
     connect(loginScene,&LoginScene::backToMenu,[=](){
         this->show();
     });
 
     loginScene->show(); //顯示登錄界面
-
 }
 
-MenuScene::~MenuScene()
-{
-    delete ui;
+//進入【設置界面】
+void MenuScene::enterSettingScene(){
+    SettingScene* settingScene = new SettingScene(this,600,480);
+    this->hide();
+    settingScene->show();
 }
 
 //創建菜單界面的按鈕
@@ -67,6 +76,7 @@ void MenuScene::initMenu(){
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
     createBtn(startBtn,btn_defaultSize,btn_defaultFont,title->geometry().y()+title->geometry().height(),30);
     //待實現：連接遊戲場景、遊戲參數設置的窗口
+    connect(startBtn,&QPushButton::clicked,this,&MenuScene::enterSettingScene);
 
     /* 設置【排行榜】按鈕 */
     QPushButton* rankBtn = new QPushButton("排行榜",this);
@@ -84,3 +94,7 @@ void MenuScene::initMenu(){
 
 }
 
+MenuScene::~MenuScene()
+{
+    delete ui;
+}

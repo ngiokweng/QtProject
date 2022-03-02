@@ -17,12 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     LoginScene.cpp \
+    MapScene.cpp \
+    SettingScene.cpp \
+    Snake.cpp \
     main.cpp \
     MenuScene.cpp
 
 HEADERS += \
     LoginScene.h \
-    MenuScene.h
+    MapScene.h \
+    MenuScene.h \
+    Point.h \
+    SettingScene.h \
+    Snake.h
 
 FORMS += \
     menuscene.ui
