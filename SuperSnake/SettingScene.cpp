@@ -1,14 +1,21 @@
 #include "SettingScene.h"
 #include <QPushButton>
-#include "Snake.h"
 
 SettingScene::SettingScene(QWidget *parent,int width,int height) : QMainWindow(parent),width(width),height(height)
 {
     init();
 }
 
+SettingScene::~SettingScene(){
+    //因為snake沒有加入到【對象樹】中，所以要手動釋放
+    if(snake){
+        delete snake;
+        snake = nullptr;
+    }
+}
+
 void SettingScene::enterMapScene(){
-    Snake* snake = new Snake(3,20);
+    snake = new Snake(3,20);
     MapScene* mapScence = new MapScene(this,25,40,snake);
     this->hide();
     mapScence->show();

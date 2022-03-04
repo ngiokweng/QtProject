@@ -2,6 +2,15 @@
 
 Snake::Snake(int snakeNum,int snakeSize):s_num(snakeNum),s_size(snakeSize)
 {
+    this->init();
+}
+
+void Snake::init(){
+    //初始化長度
+    s_num = 3;
+    //清空座標數組
+    coordinates.clear();
+    coordinates.resize(s_num);
     /* 初始化蛇的座標 */
     for(int i = 0;i<s_num;i++){
         //定義coordinate[0]為蛇頭
@@ -10,7 +19,6 @@ Snake::Snake(int snakeNum,int snakeSize):s_num(snakeNum),s_size(snakeSize)
     }
     //默認方向：右
     dir = DOWN;
-
 }
 
 //獲取蛇的大小
@@ -23,7 +31,7 @@ int Snake::getNum(){
     return s_num;
 }
 //獲取蛇的座標
-Point* Snake::getCoords(){
+std::vector<Point> Snake::getCoords(){
     return coordinates;
 }
 
@@ -64,4 +72,10 @@ void Snake::setDir(int dir){
 //獲取蛇當前的運動方向
 int Snake::getDir(){
     return this->dir;
+}
+
+//將蛇的長度加1
+void Snake::addNum(){
+    this->s_num++;
+    coordinates.push_back(Point());
 }
