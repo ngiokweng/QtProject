@@ -5,7 +5,7 @@
 #include <vector>
 
 
-MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake) : QMainWindow(parent),row(row),col(col),snake(snake)
+MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
 {
     this->setFixedSize(col*snake->getSize(),row*snake->getSize());
     this->setWindowTitle("【SuperSnake】遊戲界面");
@@ -136,7 +136,7 @@ void MapScene::initMap(){
 
     //設置定時器
     if(!gameTimer)gameTimer = new QTimer(this);
-    gameTimer->setInterval(100);
+    gameTimer->setInterval(speed);
 
     //初始化食物對象
     if(!food)food = new Food(snake->getSize());
@@ -151,7 +151,7 @@ void MapScene::initMap(){
 
 MapScene::~MapScene(){
     //因為food沒有加入到【對象樹】中，所以要手動釋放
-    if(food){
+    if(food!=nullptr){
         delete food;
         food = nullptr;
     }

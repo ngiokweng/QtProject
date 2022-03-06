@@ -31,7 +31,8 @@ HEADERS += \
     MenuScene.h \
     Point.h \
     SettingScene.h \
-    Snake.h
+    Snake.h \
+    data.h
 
 FORMS += \
     menuscene.ui

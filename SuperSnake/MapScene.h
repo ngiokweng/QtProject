@@ -12,7 +12,7 @@ class MapScene : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MapScene(QWidget *parent = nullptr,int row = 50,int col = 30,Snake* snake = nullptr);
+    explicit MapScene(QWidget *parent = nullptr,int row = 50,int col = 30,Snake* snake = nullptr,int speed = 100);
     ~MapScene();
     void initMap(); //初始化地圖
     void drawSnake(std::vector<Point>& snakeCoords,int snakeNum,int snakeSize);
@@ -29,6 +29,7 @@ private:
     QTimer* gameTimer = nullptr; //控制遊戲開始、暫停的定時器
     bool moveFlag = true;  //防止玩家操作太快，同時轉了兩個方向所導致的【蛇回頭】
     Food* food = nullptr;
+    int speed; //蛇的速度
 
 
 };
