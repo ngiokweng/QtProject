@@ -22,7 +22,7 @@ public:
     int getDir(); //獲取蛇當前的運動方向
     std::vector<Point> getCoords(); //獲取蛇的座標
     void move();  //讓蛇移動的函數
-    void setDir(int dir); //設置蛇的方向
+    void setDir(direction dir); //設置蛇的方向
     void addNum();
     void init(); //將蛇初始化到基本形態
 

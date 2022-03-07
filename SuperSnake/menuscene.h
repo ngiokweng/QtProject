@@ -22,6 +22,7 @@ public:
     void enterLoginScene(); //進入【登錄界面】
     void enterSettingScene(); //進入【設置界面】
 
+
 private:
     Ui::MenuScene *ui;
     int width;

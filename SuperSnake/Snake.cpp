@@ -18,7 +18,7 @@ void Snake::init(){
         coordinates[s_num - i -1].x = i*s_size;
     }
     //默認方向：右
-    dir = DOWN;
+    dir = RIGHT;
 }
 
 //獲取蛇的大小
@@ -66,7 +66,7 @@ void Snake::move(){
     }
 }
 //設置蛇的方向
-void Snake::setDir(int dir){
+void Snake::setDir(direction dir){
     this->dir = dir;
 }
 //獲取蛇當前的運動方向
@@ -77,5 +77,8 @@ int Snake::getDir(){
 //將蛇的長度加1
 void Snake::addNum(){
     this->s_num++;
-    coordinates.push_back(Point());
+    Point loc;
+    loc.x = -9999;
+    loc.y = -9999;
+    coordinates.push_back(loc);
 }

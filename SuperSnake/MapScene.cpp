@@ -3,36 +3,88 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <vector>
+#include <QPainter>
 
 
 MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
 {
-    this->setFixedSize(col*snake->getSize(),row*snake->getSize());
+
+    int mapWidth = col*snake->getSize(),mapHeight = row*snake->getSize();
+    int controlBarHeight = 50;
+
+    this->setFixedSize(mapWidth,mapHeight+controlBarHeight);
     this->setWindowTitle("【SuperSnake】遊戲界面");
+    this->initControlBar(mapWidth,mapHeight,controlBarHeight); //初始化最底下的控制欄
     this->initMap();
 
-    connect(gameTimer,&QTimer::timeout,[=](){
-        snake->move();
-        moveFlag = true; //表示上一次的【方向指令】已執行完成，可以接收下一個【方向指令】
-        update();
-    });
+    connect(gameTimer,&QTimer::timeout,this,&MapScene::onGameRunning);
 
-    //for test
-    QPushButton* startGameBtn = new QPushButton("點擊後開始遊戲",this);
-    startGameBtn->setFont(QFont("Adobe 楷体 Std R",20));
+
+}
+
+void MapScene::onGameRunning(){
+    snake->move();
+    moveFlag = true; //表示上一次的【方向指令】已執行完成，可以接收下一個【方向指令】
+
+    /*取得蛇的各項信息*/
+    int snakeSize = snake->getSize();
+    std::vector<Point> snakeCoords = snake->getCoords();
+    Point foodCoord = food->getCoor();
+    //獲取食物座標
+    int snakeNum = snake->getNum();
+
+
+    //判斷蛇有無吃東西
+    if(isSnakeEat(snakeCoords,foodCoord)){
+        snake->addNum();
+        food->createFood(this->row,this->col);
+
+        score+=100; //每食一個食物+100分
+        scoreLabel->setText(QString("分數：%1").arg(score));
+        scoreLabel->adjustSize(); //防止分數顯示不完全
+    }
+    //判斷蛇是否死亡
+    if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
+        gameTimer->stop();
+        /* 注：QMessageBox要放在initMap()的下面，因為它是模態對話框，會阻塞進程，從而導致一些bug */
+        this->initMap();
+        QMessageBox::information(this,"GG","Game Over！！");
+    }
+
+
+    update(); //手動調用paintEvent
+}
+
+void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
+    //開始遊戲的按鈕
+    QPushButton* startGameBtn = new QPushButton("開始遊戲",this);
+    startGameBtn->setFont(QFont("Adobe 楷体 Std R",14));
     startGameBtn->adjustSize();
-    startGameBtn->move(col*snake->getSize()/2-startGameBtn->width()/2,row*snake->getSize()/2-startGameBtn->height()/2);
+    startGameBtn->move(mapWidth*0.05,mapHeight+controlBarHeight/2-startGameBtn->height()/2);
     connect(startGameBtn,&QPushButton::clicked,[=](){
         gameTimer->start();
 
     });
 
+    //暫停遊戲的按鈕
+    QPushButton* pauseGameBtn = new QPushButton("暫停遊戲",this);
+    pauseGameBtn->setFont(QFont("Adobe 楷体 Std R",14));
+    pauseGameBtn->adjustSize();
+    pauseGameBtn->move(mapWidth*0.05+startGameBtn->width()+10,mapHeight+controlBarHeight/2-pauseGameBtn->height()/2);
+    connect(pauseGameBtn,&QPushButton::clicked,[=](){
+        gameTimer->stop();
+
+    });
+
+    scoreLabel = new QLabel("分數：0",this);
+    scoreLabel->setFont(QFont("Adobe 楷体 Std R",14));
+    scoreLabel->adjustSize();
+    scoreLabel->move(mapWidth*0.05+startGameBtn->width()+pauseGameBtn->width()+20,mapHeight+controlBarHeight/2-scoreLabel->height()/2);
 }
 
 // 畫蛇的函數
-void MapScene::drawSnake(std::vector<Point>& snakeCoords,int snakeNum,int snakeSize){
+void MapScene::drawSnake(QPainter& painter,std::vector<Point>& snakeCoords,int snakeNum,int snakeSize){
     //設置畫家各項屬性
-    QPainter painter(this);
     painter.setPen(QColor(Qt::red));
     //畫蛇
     for(int i = 0;i<snakeNum;i++){
@@ -41,53 +93,46 @@ void MapScene::drawSnake(std::vector<Point>& snakeCoords,int snakeNum,int snakeS
 }
 
 //畫食物的函數
-void MapScene::drawFood(int snakeSize){
+void MapScene::drawFood(QPainter& painter,int snakeSize){
     //設置畫家各項屬性
-    QPainter painter(this);
     painter.setPen(QColor(Qt::blue));
     Point foodCoor = food->getCoor();
     painter.drawEllipse(foodCoor.x,foodCoor.y,snakeSize,snakeSize);
 }
 
+//判斷蛇是否死亡
+bool MapScene::isSnakeDead(std::vector<Point>& snakeCoords,int& snakeSize,int& snakeNum){
+    //檢查蛇有無超出邊界
+    if(snakeCoords[0].x<0 || snakeCoords[0].x>=this->col*snakeSize || snakeCoords[0].y<0 || snakeCoords[0].y>=this->row*snakeSize )return true;
+    //檢查有沒有碰到自己
+    for(int i = 1;i < snakeNum;i++){
+        if(snakeCoords[0].x == snakeCoords[i].x && snakeCoords[0].y == snakeCoords[i].y )return true;
+    }
+    return false;
+}
+
+//判斷蛇有無吃東西
+bool MapScene::isSnakeEat(std::vector<Point>& snakeCoords,Point& foodCoord){
+        //檢查蛇頭有沒有吃到食物
+        if(snakeCoords[0].x == foodCoord.x && snakeCoords[0].y == foodCoord.y)return true;
+        return false;
+}
+
 // 繪圖事件
 void MapScene::paintEvent(QPaintEvent* event){
 
-
-    std::vector<Point> snakeCoords = snake->getCoords();
-    Point foodCoord = food->getCoor();
+    QPainter painter(this);
     int snakeSize = snake->getSize();
-
-    //檢查蛇頭有沒有吃到食物
-    if(snakeCoords[0].x == foodCoord.x && snakeCoords[0].y == foodCoord.y){
-
-        snake->addNum();
-        food->createFood(this->row,this->col);
-    }
+    std::vector<Point> snakeCoords = snake->getCoords();
     int snakeNum = snake->getNum();
 
-    //檢查蛇有無超出邊界
-    if(snakeCoords[0].x<0 || snakeCoords[0].x>=this->col*snakeSize || snakeCoords[0].y<0 || snakeCoords[0].y>=this->row*snakeSize ){
-        gameTimer->stop();
-        /* 注：QMessageBox要放在initMap()的下面，因為它是模態對話框，會阻塞進程，從而導致一些bug */
-        this->initMap();
-        QMessageBox::information(this,"GG","Game Over！！");
-        return;
-
-    }
-    //檢查有沒有碰到自己
-    for(int i = 1;i < snakeNum;i++){
-        if(snakeCoords[0].x == snakeCoords[i].x && snakeCoords[0].y == snakeCoords[i].y ){
-            gameTimer->stop();
-            /* 注：QMessageBox要放在initMap()的下面，因為它是模態對話框，會阻塞進程，從而導致一些bug */
-            this->initMap();
-            QMessageBox::information(this,"GG","Game Over！！");
-            return;
-        }
-    }
+    //分隔線：分開遊戲區域和控制區域
+    painter.drawLine(0,row*snakeSize,col*snakeSize,row*snakeSize);
 
 
-    drawFood(snakeSize);
-    drawSnake(snakeCoords,snakeNum,snakeSize);
+    drawFood(painter,snakeSize);
+    drawSnake(painter,snakeCoords,snakeNum,snakeSize);
+
 }
 
 // 通過 wasd 改變蛇的方向
@@ -100,26 +145,26 @@ void MapScene::changeSnakeDir(QKeyEvent* event){
             if(snakeDir!=DOWN){
                 snake->setDir(UP);
                 moveFlag = false;
-                break;
             }
+            break;
         case Qt::Key_A:
             if(snakeDir!=RIGHT){
                 snake->setDir(LEFT);
                 moveFlag = false;
-                break;
             }
+            break;
         case Qt::Key_S:
             if(snakeDir!=UP){
                 snake->setDir(DOWN);
                 moveFlag = false;
-                break;
             }
+            break;
         case Qt::Key_D:
             if(snakeDir!=LEFT){
                 snake->setDir(RIGHT);
                 moveFlag = false;
-                break;
             }
+            break;
 
     }
 }
@@ -145,6 +190,10 @@ void MapScene::initMap(){
     //初始化蛇
     snake->init();
 
+    //重置分數
+    score = 0;
+    scoreLabel->setText(QString("分數：%1").arg(score));
+
 
 
 }
@@ -155,4 +204,5 @@ MapScene::~MapScene(){
         delete food;
         food = nullptr;
     }
+
 }
