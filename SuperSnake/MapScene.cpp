@@ -4,6 +4,11 @@
 #include <QPushButton>
 #include <vector>
 #include <QPainter>
+#include "data.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include "User.h"
+
 
 
 MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
@@ -19,6 +24,75 @@ MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMa
 
     connect(gameTimer,&QTimer::timeout,this,&MapScene::onGameRunning);
 
+
+}
+
+//更新排行榜( 注：不同速度有不同的記錄 )
+/*
+ * 排行榜.json的儲存格式：
+ * {
+ *   "speed1":{
+ *          "userId": {
+                "maxScore": XXX,
+                "userName": "XXX"
+            }
+ *    },
+ *
+ *   "speed2":{},
+ *   "speed3":{}
+ *    //....
+ * }
+*/
+bool MapScene::updateRankList(){
+
+    /* 打開文件 */
+    QFile rankListFile;
+    rankListFile.setFileName(rankListPath);
+    rankListFile.open(QIODevice::ReadOnly);
+    QByteArray rankListData = rankListFile.readAll(); //讀取所有內容
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(rankListData); //將數據解析為Json格式
+    QJsonObject jsonObj = jsonDoc.object(); //轉為QJsonObject類型
+
+    /* 獲取各種信息 */
+    QString userId = User::getCurrentUserId();
+    QString userName = User::getCurrentUserName();
+    QString speed = QString::number(this->speed);
+
+    QJsonObject speedObj = jsonObj[speed].toObject();
+
+    //當【指定速度的排行榜】不包含當前的userId時，代表第一次遊玩該速度，可直接記錄該速度的排行榜中
+    if(!speedObj.contains(userId)){
+        QJsonObject newRankRecord;
+        newRankRecord.insert("userName",userName);
+        newRankRecord.insert("maxScore",score);
+        speedObj.insert(userId,newRankRecord);
+
+    }else{
+        int maxScore = speedObj[userId].toObject()["maxScore"].toInt();
+        //當局分數<=最高分時，不作記錄，直接返回
+        if(score<=maxScore){
+            rankListFile.close();
+            return false;
+        }
+
+        //更新最高分
+        QJsonObject userIdObj = speedObj[userId].toObject();
+        userIdObj["maxScore"] = score;
+        speedObj[userId] = userIdObj;
+
+
+    }
+    rankListFile.close();
+    rankListFile.open(QIODevice::WriteOnly);
+
+    /* 更新排行榜內容 */
+    jsonObj[speed] = speedObj;
+    jsonDoc.setObject(jsonObj);
+    rankListFile.write(jsonDoc.toJson());
+
+    rankListFile.close();
+    return true;
 
 }
 
@@ -46,9 +120,16 @@ void MapScene::onGameRunning(){
     //判斷蛇是否死亡
     if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
         gameTimer->stop();
-        /* 注：QMessageBox要放在initMap()的下面，因為它是模態對話框，會阻塞進程，從而導致一些bug */
+        bool ret = updateRankList();
+        QString resultStr = QString("你的分數為：%1").arg(score);
+        if(!ret){
+            resultStr+="  >>排行榜沒有任何改變@@<<";
+        }else{
+            resultStr+="  >>排行榜已更新^.^<<";
+        }
+        /* 注：QMessageBox要放在initMap()的之後，因為它是模態對話框，會阻塞進程，從而導致一些bug */
         this->initMap();
-        QMessageBox::information(this,"GG","Game Over！！");
+        QMessageBox::information(this,"遊戲結束",resultStr);
     }
 
 
@@ -194,7 +275,7 @@ void MapScene::initMap(){
 
     //設置定時器
     if(!gameTimer)gameTimer = new QTimer(this);
-    gameTimer->setInterval(speed);
+    gameTimer->setInterval(100/speed);
 
     //初始化食物對象
     if(!food)food = new Food(snake->getSize());

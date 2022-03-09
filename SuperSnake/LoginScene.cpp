@@ -32,7 +32,8 @@ void LoginScene::regAccount(){
     }
     QMessageBox::information(this,"恭喜~~~","注冊成功！！");
 
-    /* 注冊成功後，返回【菜單界面】 */
+    /* 注冊成功後，先記錄當前用戶信息，再返回【菜單界面】 */
+    User::setCurrentUser(userName,userId);
     emit this->backToMenu();
     this->close();
 
@@ -54,6 +55,8 @@ void LoginScene::loginAccount(){
         return;
     }
     QMessageBox::information(this,"恭喜~~~","登錄成功！！");
+    //記錄當前用戶信息
+    User::setCurrentUser(nullptr,userId);
     emit this->backToMenu();
     this->close();
 

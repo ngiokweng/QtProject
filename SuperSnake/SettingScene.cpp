@@ -26,7 +26,7 @@ void SettingScene::enterMapScene(){
     int speed = speedSelect->currentIndex()+1;
 
     snake = new Snake(3,snakeSize);
-    MapScene* mapScence = new MapScene(this,mapRow,mapCol,snake,100/speed);
+    MapScene* mapScence = new MapScene(this,mapRow,mapCol,snake,speed);
 
     //當接收到mapScene傳來的backToSettingScene信號時，就返回到SettingScene界面
     connect(mapScence,&MapScene::backToSettingScene,[=](){

@@ -13,10 +13,11 @@ User::User()
 
 
 bool User::createAccount(QString userName,QString userId,QString userPwd){
-    /* 讀取文件 */
+    /* 打開文件 */
     QFile userList;
     userList.setFileName(accountPath);
     userList.open(QIODevice::ReadOnly);
+    //讀取所有內容
     QByteArray userData = userList.readAll();
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(userData); //將數據解析為Json格式
@@ -50,10 +51,11 @@ bool User::createAccount(QString userName,QString userId,QString userPwd){
 
  //登錄帳號
 bool User::loginAccount(QString userId,QString userPwd){
-    /* 讀取文件 */
+    /* 打開文件 */
     QFile userList;
     userList.setFileName(accountPath);
     userList.open(QIODevice::ReadOnly);
+    //讀取所有內容
     QByteArray userData = userList.readAll();
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(userData); //將數據解析為Json格式
@@ -67,6 +69,70 @@ bool User::loginAccount(QString userId,QString userPwd){
     return false;
 
 
+
+}
+
+void User::setCurrentUser(QString userName,QString userId){
+    //當userName為nullptr，代表是登錄時調用這個函數
+    //由於登錄不用輸入用戶名，所以要打開儲存【所有用戶】的文件來找到指定id的用戶名
+    if(userName == nullptr){
+        QFile userList;
+        userList.setFileName(accountPath);
+        userList.open(QIODevice::ReadOnly);
+        QByteArray userData = userList.readAll();
+
+        QJsonDocument userList_jsonDoc = QJsonDocument::fromJson(userData); //將數據解析為Json格式
+        QJsonObject userList_jsonObj = userList_jsonDoc.object(); //轉為QJsonObject類型
+
+        userName = userList_jsonObj[userId].toObject()["userName"].toString();
+
+        userList.close();
+
+    }
+
+    /* 打開文件指定文件 */
+    QFile currentUserFile;
+    currentUserFile.setFileName(currentUserPath);
+    currentUserFile.open(QIODevice::WriteOnly);
+
+    QJsonDocument currentUser_jsonDoc;
+    QJsonObject currentUser_jsonObj{
+        {userId,userName}
+    };
+    currentUser_jsonDoc.setObject(currentUser_jsonObj);
+
+
+    currentUserFile.write(currentUser_jsonDoc.toJson());
+    currentUserFile.close();
+}
+
+QString User::getCurrentUserId(){
+    /* 打開文件指定文件 */
+    QFile currentUserFile;
+    currentUserFile.setFileName(currentUserPath);
+    currentUserFile.open(QIODevice::ReadOnly);
+    QByteArray userData = currentUserFile.readAll();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    currentUserFile.close();
+    return jsonObj.keys()[0];
+
+}
+
+QString User::getCurrentUserName(){
+    /* 打開文件指定文件 */
+    QFile currentUserFile;
+    currentUserFile.setFileName(currentUserPath);
+    currentUserFile.open(QIODevice::ReadOnly);
+    QByteArray userData = currentUserFile.readAll();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    currentUserFile.close();
+    return jsonObj[jsonObj.keys()[0]].toString();
 
 }
 
