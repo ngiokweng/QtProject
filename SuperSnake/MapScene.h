@@ -26,6 +26,9 @@ public:
 public slots:
     void onGameRunning();
 
+signals:
+    void backToSettingScene();
+
 protected:
     void paintEvent(QPaintEvent* event);  //繪圖事件
     void keyPressEvent(QKeyEvent* event); //鍵盤點擊事件

@@ -43,6 +43,12 @@ void MenuScene::enterLoginScene(){
 //進入【設置界面】
 void MenuScene::enterSettingScene(){
     SettingScene* settingScene = new SettingScene(this,600,480);
+
+    //當接收到SettingScene傳來的backToMenuScene信號時，就返回到MenuScene界面
+    connect(settingScene,&SettingScene::backToMenuScene,[=](){
+       this->show();
+    });
+
     this->hide();
     settingScene->show();
 }

@@ -60,7 +60,7 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     QPushButton* startGameBtn = new QPushButton("開始遊戲",this);
     startGameBtn->setFont(QFont("Adobe 楷体 Std R",14));
     startGameBtn->adjustSize();
-    startGameBtn->move(mapWidth*0.05,mapHeight+controlBarHeight/2-startGameBtn->height()/2);
+    startGameBtn->move(mapWidth*0.03,mapHeight+controlBarHeight/2-startGameBtn->height()/2);
     connect(startGameBtn,&QPushButton::clicked,[=](){
         gameTimer->start();
 
@@ -73,6 +73,19 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     pauseGameBtn->move(mapWidth*0.05+startGameBtn->width()+10,mapHeight+controlBarHeight/2-pauseGameBtn->height()/2);
     connect(pauseGameBtn,&QPushButton::clicked,[=](){
         gameTimer->stop();
+
+    });
+
+    //返回的按鈕
+    QPushButton* backBtn = new QPushButton("返回",this);
+    backBtn->setFont(QFont("Adobe 楷体 Std R",14));
+    backBtn->adjustSize();
+    backBtn->move(mapWidth*0.95-backBtn->width(),mapHeight+controlBarHeight/2-backBtn->height()/2);
+    connect(backBtn,&QPushButton::clicked,[=](){
+        this->close();
+        //發送返回【設定界面】的信號
+        emit backToSettingScene();
+
 
     });
 

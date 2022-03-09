@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFile>
+#include "User.h"
 
 
 
@@ -23,16 +24,18 @@ void LoginScene::regAccount(){
         QMessageBox::critical (this,"錯誤！！！","用戶名/帳戶/密碼不能為空！！！");
         return;
     }
-    //數據存儲順序：【用戶名】 【帳號】 【密碼】
-    QString userData = QString("%1 %2 %3\n").arg(userName).arg(userId).arg(userPwd);
-    //將數據寫到本地的.txt檔，以作儲存
-    QFile accountFile("./data/user_account.txt");
-    accountFile.open(QIODevice::Append);
-    accountFile.write(userData.toUtf8().data());
+    //返回true代表注冊驗證成功
+    bool ret = User::createAccount(userName,userId,userPwd);
+    if(!ret){
+        QMessageBox::critical (this,"錯誤","帳號/用戶名已存在！");
+        return;
+    }
     QMessageBox::information(this,"恭喜~~~","注冊成功！！");
+
     /* 注冊成功後，返回【菜單界面】 */
     emit this->backToMenu();
     this->close();
+
 }
 
 //登錄account
@@ -44,24 +47,15 @@ void LoginScene::loginAccount(){
         QMessageBox::critical (this,"錯誤！！！","帳戶/密碼不能為空！！！");
         return;
     }
-    //讀取所有帳戶信息
-    QFile accountFile("./data/user_account.txt");
-    accountFile.open(QIODevice::ReadOnly);
-    while(!accountFile.atEnd()){
-        QString str = accountFile.readLine();
-        str.replace('\n',' '); //為了防止換行符影響到帳密的判斷
-        QStringList accountInfo = str.split(' ');
-
-        if(userId == accountInfo[1] && userPwd == accountInfo[2]){
-            /* 注冊成功後，返回【菜單界面】 */
-            QMessageBox::information(this,"恭喜~~~","登錄成功！！");
-            emit this->backToMenu();
-            this->close();
-            return;
-        }
+    //返回true代表登錄驗證成功
+    bool ret = User::loginAccount(userId,userPwd);
+    if(!ret){
+        QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
+        return;
     }
-    // 當遍歷完所有帳戶後，仍未能匹配成功，即代表輸入有誤
-    QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
+    QMessageBox::information(this,"恭喜~~~","登錄成功！！");
+    emit this->backToMenu();
+    this->close();
 
 }
 

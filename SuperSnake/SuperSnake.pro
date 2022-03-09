@@ -21,6 +21,7 @@ SOURCES += \
     MapScene.cpp \
     SettingScene.cpp \
     Snake.cpp \
+    User.cpp \
     main.cpp \
     MenuScene.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     Point.h \
     SettingScene.h \
     Snake.h \
+    User.h \
     data.h
 
 FORMS += \

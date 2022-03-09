@@ -16,6 +16,10 @@ public:
     void init(); //初始化【設置】界面
     void enterMapScene(); //進入MapScene
     void onSizeSelectChange();
+
+signals:
+    void backToMenuScene();
+
 private:
     int width;  //【設置界面】的寬
     int height; //【設置界面】的高
@@ -24,6 +28,7 @@ private:
     QComboBox* rowSelect; //地圖[行數]選擇框
     QComboBox* snakeSizeSelect; //[蛇大小]選擇框
     QComboBox* speedSelect;  //[蛇速度]選擇框
+
 
 };
 

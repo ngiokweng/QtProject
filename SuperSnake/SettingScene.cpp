@@ -8,6 +8,8 @@
 SettingScene::SettingScene(QWidget *parent,int width,int height) : QMainWindow(parent),width(width),height(height)
 {
     init();
+
+
 }
 
 SettingScene::~SettingScene(){
@@ -25,6 +27,12 @@ void SettingScene::enterMapScene(){
 
     snake = new Snake(3,snakeSize);
     MapScene* mapScence = new MapScene(this,mapRow,mapCol,snake,100/speed);
+
+    //當接收到mapScene傳來的backToSettingScene信號時，就返回到SettingScene界面
+    connect(mapScence,&MapScene::backToSettingScene,[=](){
+       this->show();
+    });
+
     this->hide();
     mapScence->show();
 }
@@ -100,5 +108,16 @@ void SettingScene::init(){
     enter->adjustSize(); //自適應文本內容的大小
     enter->move(width/2-enter->width()/2,height*0.9);
     connect(enter,&QPushButton::clicked,this,&SettingScene::enterMapScene);
+
+    //返回按鈕
+    QPushButton* backBtn = new QPushButton("返回",this);
+    backBtn->setFont(QFont("Adobe 繁黑體 Std B",14));
+    backBtn->adjustSize(); //自適應文本內容的大小
+    backBtn->move(width-backBtn->width()-5,5);
+    connect(backBtn,&QPushButton::clicked,[=](){
+
+        this->close();
+        emit backToMenuScene();
+    });
 
 }
