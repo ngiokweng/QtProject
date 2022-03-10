@@ -29,7 +29,7 @@ void SettingScene::enterMapScene(){
     MapScene* mapScence = new MapScene(this,mapRow,mapCol,snake,speed);
 
     //當接收到mapScene傳來的backToSettingScene信號時，就返回到SettingScene界面
-    connect(mapScence,&MapScene::backToSettingScene,[=](){
+    connect(mapScence,&MapScene::backToSettingScene,[this](){
        this->show();
     });
 
@@ -114,7 +114,7 @@ void SettingScene::init(){
     backBtn->setFont(QFont("Adobe 繁黑體 Std B",14));
     backBtn->adjustSize(); //自適應文本內容的大小
     backBtn->move(width-backBtn->width()-5,5);
-    connect(backBtn,&QPushButton::clicked,[=](){
+    connect(backBtn,&QPushButton::clicked,[this](){
 
         this->close();
         emit backToMenuScene();

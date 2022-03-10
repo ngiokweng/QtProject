@@ -19,6 +19,7 @@ SOURCES += \
     Food.cpp \
     LoginScene.cpp \
     MapScene.cpp \
+    RankListScene.cpp \
     SettingScene.cpp \
     Snake.cpp \
     User.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     MapScene.h \
     MenuScene.h \
     Point.h \
+    RankListScene.h \
     SettingScene.h \
     Snake.h \
     User.h \

@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <MapScene.h>
 #include "SettingScene.h"
+#include "RankListScene.h"
 
 MenuScene::MenuScene(QWidget *parent)
     : QWidget(parent)
@@ -33,7 +34,7 @@ void MenuScene::enterLoginScene(){
     LoginScene* loginScene = new LoginScene(this,600,400,mode);
 
     // 當loginScene發送backToMenu信號時，就返回到MenuScene
-    connect(loginScene,&LoginScene::backToMenu,[=](){
+    connect(loginScene,&LoginScene::backToMenu,[this](){
         this->show();
     });
 
@@ -45,12 +46,22 @@ void MenuScene::enterSettingScene(){
     SettingScene* settingScene = new SettingScene(this,600,480);
 
     //當接收到SettingScene傳來的backToMenuScene信號時，就返回到MenuScene界面
-    connect(settingScene,&SettingScene::backToMenuScene,[=](){
+    connect(settingScene,&SettingScene::backToMenuScene,[this](){
        this->show();
     });
 
     this->hide();
     settingScene->show();
+}
+// 進入【排行榜界面】
+void MenuScene::enterRankListScene(){
+    RankListScene* rankListScene = new RankListScene(this,1200,720);
+    //當接收到RankListScene傳來的backToMenuScene信號時，就返回到MenuScene界面
+    connect(rankListScene,&RankListScene::backToMenuScene,[this](){
+       this->show();
+    });
+    this->hide();
+    rankListScene->show();
 }
 
 //創建菜單界面的按鈕
@@ -81,12 +92,13 @@ void MenuScene::initMenu(){
     /* 設置【開始遊戲】按鈕 */
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
     createBtn(startBtn,btn_defaultSize,btn_defaultFont,title->geometry().y()+title->geometry().height(),30);
-    //待實現：連接遊戲場景、遊戲參數設置的窗口
+    //連接遊戲場景、遊戲參數設置的窗口
     connect(startBtn,&QPushButton::clicked,this,&MenuScene::enterSettingScene);
 
     /* 設置【排行榜】按鈕 */
     QPushButton* rankBtn = new QPushButton("排行榜",this);
     createBtn(rankBtn,btn_defaultSize,btn_defaultFont,startBtn->geometry().y()+startBtn->geometry().height(),30);
+    connect(rankBtn,&QPushButton::clicked,this,&MenuScene::enterRankListScene);
 
 
     /* 設置【個人信息】按鈕 */

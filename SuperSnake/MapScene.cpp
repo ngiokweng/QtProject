@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "User.h"
+#include <QDateTime>
 
 
 
@@ -35,6 +36,7 @@ MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMa
  *          "userId": {
                 "maxScore": XXX,
                 "userName": "XXX"
+                "date":"XXX"
             }
  *    },
  *
@@ -58,6 +60,9 @@ bool MapScene::updateRankList(){
     QString userId = User::getCurrentUserId();
     QString userName = User::getCurrentUserName();
     QString speed = QString::number(this->speed);
+    QDateTime current_date_time =QDateTime::currentDateTime();
+    QString current_date =current_date_time.toString("yyyy-MM-dd");
+
 
     QJsonObject speedObj = jsonObj[speed].toObject();
 
@@ -66,6 +71,7 @@ bool MapScene::updateRankList(){
         QJsonObject newRankRecord;
         newRankRecord.insert("userName",userName);
         newRankRecord.insert("maxScore",score);
+        newRankRecord.insert("date",current_date);
         speedObj.insert(userId,newRankRecord);
 
     }else{
@@ -79,6 +85,7 @@ bool MapScene::updateRankList(){
         //更新最高分
         QJsonObject userIdObj = speedObj[userId].toObject();
         userIdObj["maxScore"] = score;
+        userIdObj["date"] = current_date;
         speedObj[userId] = userIdObj;
 
 
@@ -142,7 +149,7 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     startGameBtn->setFont(QFont("Adobe 楷体 Std R",14));
     startGameBtn->adjustSize();
     startGameBtn->move(mapWidth*0.03,mapHeight+controlBarHeight/2-startGameBtn->height()/2);
-    connect(startGameBtn,&QPushButton::clicked,[=](){
+    connect(startGameBtn,&QPushButton::clicked,[this](){
         gameTimer->start();
 
     });
@@ -152,7 +159,7 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     pauseGameBtn->setFont(QFont("Adobe 楷体 Std R",14));
     pauseGameBtn->adjustSize();
     pauseGameBtn->move(mapWidth*0.05+startGameBtn->width()+10,mapHeight+controlBarHeight/2-pauseGameBtn->height()/2);
-    connect(pauseGameBtn,&QPushButton::clicked,[=](){
+    connect(pauseGameBtn,&QPushButton::clicked,[this](){
         gameTimer->stop();
 
     });
@@ -162,7 +169,7 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     backBtn->setFont(QFont("Adobe 楷体 Std R",14));
     backBtn->adjustSize();
     backBtn->move(mapWidth*0.95-backBtn->width(),mapHeight+controlBarHeight/2-backBtn->height()/2);
-    connect(backBtn,&QPushButton::clicked,[=](){
+    connect(backBtn,&QPushButton::clicked,[this](){
         this->close();
         //發送返回【設定界面】的信號
         emit backToSettingScene();
