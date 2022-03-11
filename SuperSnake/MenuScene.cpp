@@ -64,6 +64,18 @@ void MenuScene::enterRankListScene(){
     rankListScene->show();
 }
 
+//登出
+void MenuScene::logout(){
+    LoginScene* loginScene = new LoginScene(this,600,400,LOGIN);
+
+    // 當loginScene發送backToMenu信號時，就返回到MenuScene
+    connect(loginScene,&LoginScene::backToMenu,[this](){
+        this->show();
+    });
+    this->hide();
+    loginScene->show(); //顯示登錄界面
+}
+
 //創建菜單界面的按鈕
 void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,QFont btnFont,int loc_y,int offset){
     btn->resize(btnSize);
@@ -87,7 +99,7 @@ void MenuScene::initMenu(){
 
     /* 按鈕的默認樣式 */
     QSize btn_defaultSize(150,75);
-    QFont btn_defaultFont("Adobe 繁黑體 Std B",20);
+    QFont btn_defaultFont("Adobe 繁黑體 Std B",18);
 
     /* 設置【開始遊戲】按鈕 */
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
@@ -108,7 +120,7 @@ void MenuScene::initMenu(){
     /* 設置【登出】按鈕 */
     QPushButton* logoutBtn = new QPushButton("登出",this);
     createBtn(logoutBtn,btn_defaultSize,btn_defaultFont,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
-
+    connect(logoutBtn,&QPushButton::clicked,this,&MenuScene::logout);
 
 }
 

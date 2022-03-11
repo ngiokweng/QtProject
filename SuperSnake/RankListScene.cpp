@@ -102,8 +102,11 @@ void RankListScene::init(){
             QTableWidgetItem* userName = new QTableWidgetItem(rankInfo[i+1][k].second.first);
             QTableWidgetItem* date = new QTableWidgetItem(rankInfo[i+1][k].second.second);
             score->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
+            score->setFont(QFont("Adobe 楷体 Std R",14));
             userName->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
+            userName->setFont(QFont("Adobe 楷体 Std R",14));
             date->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
+            date->setFont(QFont("Adobe 楷体 Std R",14));
 
             //k代表行，j代表列
             tabels[i]->setItem(k,j,userName);
