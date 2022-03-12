@@ -5,11 +5,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
+#include <QDateTime>
 
-User::User()
-{
-
-}
+User::User(){}
 
 
 bool User::createAccount(QString userName,QString userId,QString userPwd){
@@ -97,8 +95,12 @@ void User::setCurrentUser(QString userName,QString userId){
 
     QJsonDocument currentUser_jsonDoc;
     QJsonObject currentUser_jsonObj{
-        {userId,userName}
+        {"userId",userId},
+        {"userName",userName}
     };
+    int time = QDateTime::currentDateTime().toTime_t();
+    currentUser_jsonObj.insert("loginTime",time);
+
     currentUser_jsonDoc.setObject(currentUser_jsonObj);
 
 
@@ -117,7 +119,7 @@ QString User::getCurrentUserId(){
     QJsonObject jsonObj = jsonDoc.object();
 
     currentUserFile.close();
-    return jsonObj.keys()[0];
+    return jsonObj["userId"].toString();
 
 }
 
@@ -132,7 +134,21 @@ QString User::getCurrentUserName(){
     QJsonObject jsonObj = jsonDoc.object();
 
     currentUserFile.close();
-    return jsonObj[jsonObj.keys()[0]].toString();
+    return jsonObj["userName"].toString();
 
+}
+
+int User::getCurrentUserLoginTime(){
+    /* 打開文件指定文件 */
+    QFile currentUserFile;
+    currentUserFile.setFileName(currentUserPath);
+    currentUserFile.open(QIODevice::ReadOnly);
+    QByteArray userData = currentUserFile.readAll();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    currentUserFile.close();
+    return jsonObj["loginTime"].toInt();
 }
 

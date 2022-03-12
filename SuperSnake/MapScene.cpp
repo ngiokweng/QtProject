@@ -118,7 +118,7 @@ void MapScene::onGameRunning(){
     //判斷蛇有無吃東西
     if(isSnakeEat(snakeCoords,foodCoord)){
         snake->addNum();
-        food->createFood(this->row,this->col);
+        food->createFood(this->row,this->col,snakeCoords);
 
         score+=100; //每食一個食物+100分
         scoreLabel->setText(QString("分數：%1").arg(score));
@@ -286,7 +286,7 @@ void MapScene::initMap(){
 
     //初始化食物對象
     if(!food)food = new Food(snake->getSize());
-    food->createFood(this->row,this->col);
+    food->createFood(this->row,this->col,snake->getCoords());
 
     //初始化蛇
     snake->init();

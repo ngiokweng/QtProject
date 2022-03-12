@@ -25,6 +25,7 @@ public slots:
     void enterSettingScene(); //進入【設置界面】
     void enterRankListScene(); // 進入【排行榜界面】
     void logout(); //登出
+    void showSelfInfo(); //顯示個人信息
 
 
 private:

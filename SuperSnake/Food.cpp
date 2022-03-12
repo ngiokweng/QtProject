@@ -1,6 +1,7 @@
 #include "Food.h"
 #include <QTime>
 #include <time.h>
+#include "Snake.h"
 
 
 Food::Food(int foodSize):foodSize(foodSize)
@@ -11,7 +12,7 @@ Food::Food(int foodSize):foodSize(foodSize)
     qsrand(time(NULL));
 }
 
-void Food::createFood(int map_row,int map_col){
+void Food::createFood(int map_row,int map_col,vector<Point> snakeCoords){
 
     int foodX = qrand()%map_col*foodSize;
     int foodY = qrand()%map_row*foodSize;
@@ -19,6 +20,19 @@ void Food::createFood(int map_row,int map_col){
     while(foodX == coordinate.x && foodY == coordinate.y){
         foodX =  qrand()%map_col*foodSize;
         foodY = qrand()%map_row*foodSize;
+    }
+    //防止食物生成在蛇身上
+    while(1){
+        bool flag = true;
+        for(auto& e:snakeCoords){
+            if(e.x == foodX && e.y == foodY){
+                foodX =  qrand()%map_col*foodSize;
+                foodY = qrand()%map_row*foodSize;
+                flag = false;
+                break;
+            }
+        }
+        if(flag)break;
     }
 
     coordinate.x = foodX;

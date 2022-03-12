@@ -9,6 +9,8 @@
 #include <MapScene.h>
 #include "SettingScene.h"
 #include "RankListScene.h"
+#include "User.h"
+#include <QDateTime>
 
 MenuScene::MenuScene(QWidget *parent)
     : QWidget(parent)
@@ -75,6 +77,35 @@ void MenuScene::logout(){
     this->hide();
     loginScene->show(); //顯示登錄界面
 }
+ //顯示個人信息
+void MenuScene::showSelfInfo(){
+    //設置個人信息的窗口
+    QMainWindow* selfInfoScene = new QMainWindow(this);
+    selfInfoScene->setFixedSize(400,300);
+    selfInfoScene->setWindowTitle("【SuperSnake】個人信息");
+
+    //獲取個人信息
+    QString userName = User::getCurrentUserName();
+    QString userId = User::getCurrentUserId();
+    int playHowLong = QDateTime::currentDateTime().toTime_t() - User::getCurrentUserLoginTime(); //獲取上線時長(單位：s)
+    /*轉化為時分秒的形式*/
+    int hour,minute,second;
+    hour = playHowLong/3600;
+    minute = (playHowLong - hour*3600)/60;
+    second = playHowLong - 3600*hour - 60*minute;
+    //格式化到字符串中
+    QString playDate = QString("%1:%2:%3").arg(hour,2,10,QLatin1Char('0')).arg(minute,2,10,QLatin1Char('0')).arg(second,2,10,QLatin1Char('0'));
+
+
+    //設置個人信息內容
+    QString selfInfo = QString("用戶名：%1\n\n用戶ID：%2\n\n上線時長：%3").arg(userName).arg(userId).arg(playDate);
+    QLabel* infoLabel = new QLabel(selfInfo,selfInfoScene);
+    infoLabel->setFont(QFont("Adobe 繁黑體 Std B",16));
+    infoLabel->adjustSize();
+    infoLabel->move(selfInfoScene->width()/2-infoLabel->width()/2,selfInfoScene->height()/2-infoLabel->height()/2);
+
+    selfInfoScene->show();
+}
 
 //創建菜單界面的按鈕
 void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,QFont btnFont,int loc_y,int offset){
@@ -116,6 +147,8 @@ void MenuScene::initMenu(){
     /* 設置【個人信息】按鈕 */
     QPushButton* selfInfoBtn = new QPushButton("個人信息",this);
     createBtn(selfInfoBtn,btn_defaultSize,btn_defaultFont,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
+    connect(selfInfoBtn,&QPushButton::clicked,this,&MenuScene::showSelfInfo);
+
 
     /* 設置【登出】按鈕 */
     QPushButton* logoutBtn = new QPushButton("登出",this);

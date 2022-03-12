@@ -4,6 +4,7 @@
 #include <Point.h>
 #include <vector>
 
+using std::vector;
 
 // 定義【方向】的枚舉值
 enum direction{
@@ -27,7 +28,7 @@ public:
     void init(); //將蛇初始化到基本形態
 
 private:
-    std::vector<Point> coordinates; //儲存蛇座標的數組
+    vector<Point> coordinates; //儲存蛇座標的數組
     int s_num; //儲存蛇的節數
     int s_size; //儲存蛇的大小( 每節蛇身都為正方形 )
     int dir; //蛇的方向

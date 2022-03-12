@@ -31,7 +31,7 @@ int Snake::getNum(){
     return s_num;
 }
 //獲取蛇的座標
-std::vector<Point> Snake::getCoords(){
+vector<Point> Snake::getCoords(){
     return coordinates;
 }
 

@@ -12,6 +12,7 @@ public:
     static void setCurrentUser(QString userName,QString userId);  //記錄當前登錄用戶
     static QString getCurrentUserId();
     static QString getCurrentUserName();
+    static int getCurrentUserLoginTime();
 
 
 };
