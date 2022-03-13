@@ -4,14 +4,12 @@
 #include <QMainWindow>
 #include <QLineEdit>
 
-#define REGISTER 0
-#define LOGIN 1
 
 class LoginScene : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit LoginScene(QWidget *parent = nullptr,int w = 800,int h = 600,int mode = LOGIN);
+    explicit LoginScene(QWidget *parent = nullptr,int w = 800,int h = 600);
     void init(); //初始化界面
 
 //信號
@@ -27,7 +25,6 @@ public:
 private:
     int width;  //【登錄/注冊】界面的寛
     int height; //【登錄/注冊】界面的高
-    int mode;  //判斷進入登錄/注冊界面的參數
     QLineEdit* userNameInput; //用戶名輸入框
     QLineEdit* userIdInput; //帳號輸入框
     QLineEdit* userPwdInput; //密碼輸入框

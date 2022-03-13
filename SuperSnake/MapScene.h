@@ -23,6 +23,8 @@ public:
     bool isSnakeDead(std::vector<Point>& snakeCoords,int& snakeSize,int& snakeNum); //檢查蛇的死活
     bool isSnakeEat(std::vector<Point>& snakeCoords,Point& foodCoord);  //判斷蛇有無進食
     bool updateRankList();  //更新排行榜
+    bool updateWebRankList(QString url);
+
 
 public slots:
     void onGameRunning();

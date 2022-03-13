@@ -18,6 +18,7 @@ public:
     explicit RankListScene(QWidget *parent = nullptr,int width = 600,int height = 480);
     void init(); //初始化當前場景
     void getRankInfo();  //獲取所有排行榜信息
+
 signals:
     void backToMenuScene();
 private:

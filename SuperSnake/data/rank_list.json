@@ -1,0 +1,107 @@
+{
+    "1": {
+        "1": {
+            "date": "2022-03-10",
+            "maxScore": 600,
+            "userName": "root"
+        },
+        "123": {
+            "date": "2022-03-10",
+            "maxScore": 900,
+            "userName": "123"
+        },
+        "asd": {
+            "date": "2022-03-12",
+            "maxScore": 2100,
+            "userName": "asd"
+        }
+    },
+    "10": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 100,
+            "userName": "root"
+        }
+    },
+    "2": {
+        "1": {
+            "date": "2022-03-10",
+            "maxScore": 1000,
+            "userName": "root"
+        },
+        "asd": {
+            "date": "2022-03-11",
+            "maxScore": 1300,
+            "userName": "asd"
+        },
+        "jason123": {
+            "date": "2022-03-12",
+            "maxScore": 100,
+            "userName": "jason"
+        }
+    },
+    "3": {
+        "1": {
+            "date": "2022-03-12",
+            "maxScore": 2000,
+            "userName": "root"
+        },
+        "jason123": {
+            "date": "2022-03-12",
+            "maxScore": 1100,
+            "userName": "jason"
+        }
+    },
+    "4": {
+        "1": {
+            "date": "2022-03-10",
+            "maxScore": 200,
+            "userName": "root"
+        },
+        "asd": {
+            "date": "2022-03-11",
+            "maxScore": 300,
+            "userName": "asd"
+        }
+    },
+    "5": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 400,
+            "userName": "root"
+        }
+    },
+    "6": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 100,
+            "userName": "root"
+        }
+    },
+    "7": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 100,
+            "userName": "root"
+        },
+        "asd": {
+            "date": "2022-03-12",
+            "maxScore": 0,
+            "userName": "asd"
+        }
+    },
+    "8": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 100,
+            "userName": "root"
+        }
+    },
+    "9": {
+        "1": {
+            "date": "2022-03-11",
+            "maxScore": 100,
+            "userName": "root"
+        }
+    }
+}

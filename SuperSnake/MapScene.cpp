@@ -9,11 +9,16 @@
 #include <QJsonObject>
 #include "User.h"
 #include <QDateTime>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QEventLoop>
 
 
 
 MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
 {
+//    updateWebRankList(jsonStorageUrl);
 
     int mapWidth = col*snake->getSize(),mapHeight = row*snake->getSize();
     int controlBarHeight = 50;
@@ -103,6 +108,46 @@ bool MapScene::updateRankList(){
 
 }
 
+bool MapScene::updateWebRankList(QString url){
+    //for test
+//    /*網路請求相關操作*/
+//    QNetworkAccessManager *manager = new QNetworkAccessManager();
+//    QNetworkRequest request;
+//    request.setUrl(url);
+//    QNetworkReply *reply = manager->get(request);
+
+
+//    QByteArray responseData;
+//    QEventLoop eventLoop;
+
+//    connect(reply, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
+
+//    eventLoop.exec();       //阻塞函數，直至請求完成
+
+//    responseData = reply->readAll();
+
+//    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
+//    QJsonObject jsonObj = jsonDoc.object();
+
+//    jsonObj["干你老師"] = "奈得麗";
+//    jsonObj["Name"] = "AABBCC";
+//    jsonDoc.setObject(jsonObj);
+
+//    request.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
+
+//    QNetworkReply *reply2 = manager->put(request,jsonDoc.toJson());
+
+//    connect(reply2, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
+
+
+//    eventLoop.exec();       //阻塞函數，直至請求完成
+
+//    QMessageBox::information(this,"TEST",jsonObj["Name"].toString());
+
+
+//    return true;
+}
+
 void MapScene::onGameRunning(){
     snake->move();
     moveFlag = true; //表示上一次的【方向指令】已執行完成，可以接收下一個【方向指令】
@@ -170,6 +215,7 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
     backBtn->adjustSize();
     backBtn->move(mapWidth*0.95-backBtn->width(),mapHeight+controlBarHeight/2-backBtn->height()/2);
     connect(backBtn,&QPushButton::clicked,[this](){
+        gameTimer->stop();
         this->close();
         //發送返回【設定界面】的信號
         emit backToSettingScene();

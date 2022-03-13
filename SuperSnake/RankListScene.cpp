@@ -126,8 +126,6 @@ void RankListScene::init(){
         this->close();
         //發送返回【設定界面】的信號
         emit backToMenuScene();
-
-
     });
 
 }

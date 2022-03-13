@@ -13,5 +13,7 @@ const QString accountPath = "./data/user_account.json";     //儲存用戶帳號
 const QString currentUserPath = "./data/current_user.json";  //儲存當前登錄用戶信息的檔案的[相對路徑]
 const QString rankListPath = "./data/rank_list.json";  //儲存當前登錄用戶信息的檔案的[相對路徑]
 
+const QString jsonStorageUrl = "https://api.jsonstorage.net/v1/json/a0514254-5aa2-42ba-9191-8236d65a4dc6"; //網路JSON的請求Url
+
 
 #endif // DATA_H
