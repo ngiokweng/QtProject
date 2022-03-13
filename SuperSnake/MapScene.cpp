@@ -18,7 +18,7 @@
 
 MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
 {
-//    updateWebRankList(jsonStorageUrl);
+    srand((unsigned)time(NULL)); //亂數種
 
     int mapWidth = col*snake->getSize(),mapHeight = row*snake->getSize();
     int controlBarHeight = 50;
@@ -108,46 +108,6 @@ bool MapScene::updateRankList(){
 
 }
 
-bool MapScene::updateWebRankList(QString url){
-    //for test
-//    /*網路請求相關操作*/
-//    QNetworkAccessManager *manager = new QNetworkAccessManager();
-//    QNetworkRequest request;
-//    request.setUrl(url);
-//    QNetworkReply *reply = manager->get(request);
-
-
-//    QByteArray responseData;
-//    QEventLoop eventLoop;
-
-//    connect(reply, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
-
-//    eventLoop.exec();       //阻塞函數，直至請求完成
-
-//    responseData = reply->readAll();
-
-//    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
-//    QJsonObject jsonObj = jsonDoc.object();
-
-//    jsonObj["干你老師"] = "奈得麗";
-//    jsonObj["Name"] = "AABBCC";
-//    jsonDoc.setObject(jsonObj);
-
-//    request.setHeader(QNetworkRequest::ContentTypeHeader, QString("application/json"));
-
-//    QNetworkReply *reply2 = manager->put(request,jsonDoc.toJson());
-
-//    connect(reply2, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
-
-
-//    eventLoop.exec();       //阻塞函數，直至請求完成
-
-//    QMessageBox::information(this,"TEST",jsonObj["Name"].toString());
-
-
-//    return true;
-}
-
 void MapScene::onGameRunning(){
     snake->move();
     moveFlag = true; //表示上一次的【方向指令】已執行完成，可以接收下一個【方向指令】
@@ -168,6 +128,8 @@ void MapScene::onGameRunning(){
         score+=100; //每食一個食物+100分
         scoreLabel->setText(QString("分數：%1").arg(score));
         scoreLabel->adjustSize(); //防止分數顯示不完全
+
+        *snakeColor = QColor(rand()%256,rand()%256,rand()%256); //改變蛇的顏色
     }
     //判斷蛇是否死亡
     if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
@@ -232,7 +194,10 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
 // 畫蛇的函數
 void MapScene::drawSnake(QPainter& painter,std::vector<Point>& snakeCoords,int snakeNum,int snakeSize){
     //設置畫家各項屬性
-    painter.setPen(QColor(Qt::red));
+    painter.setPen(QPen(*snakeColor));
+
+    painter.setBrush(QBrush(*snakeColor));
+
     //畫蛇
     for(int i = 0;i<snakeNum;i++){
         painter.drawRect(snakeCoords[i].x,snakeCoords[i].y,snakeSize,snakeSize);
@@ -242,9 +207,14 @@ void MapScene::drawSnake(QPainter& painter,std::vector<Point>& snakeCoords,int s
 //畫食物的函數
 void MapScene::drawFood(QPainter& painter,int snakeSize){
     //設置畫家各項屬性
-    painter.setPen(QColor(Qt::blue));
+    painter.setPen(QColor());
+    //創建畫刷
+    QBrush brush(QColor(255,255,0));;
+    painter.setBrush(brush);
+
     Point foodCoor = food->getCoor();
     painter.drawEllipse(foodCoor.x,foodCoor.y,snakeSize,snakeSize);
+
 }
 
 //判斷蛇是否死亡
@@ -334,8 +304,12 @@ void MapScene::initMap(){
     if(!food)food = new Food(snake->getSize());
     food->createFood(this->row,this->col,snake->getCoords());
 
+    //初始化蛇的顏色
+    if(!snakeColor)snakeColor = new QColor(rand()%256,rand()%256,rand()%256);
     //初始化蛇
     snake->init();
+
+
 
     //重置分數
     score = 0;
@@ -350,6 +324,10 @@ MapScene::~MapScene(){
     if(food!=nullptr){
         delete food;
         food = nullptr;
+    }
+    if(snakeColor!=nullptr){
+        delete snakeColor;
+        snakeColor = nullptr;
     }
 
 }

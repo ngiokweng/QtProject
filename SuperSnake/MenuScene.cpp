@@ -104,9 +104,8 @@ void MenuScene::showSelfInfo(){
 }
 
 //創建菜單界面的按鈕
-void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,QFont btnFont,int loc_y,int offset){
+void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,int loc_y,int offset){
     btn->resize(btnSize);
-//    btn->setFont(btnFont);
     btn->move(width/2-btn->geometry().width()/2,loc_y+offset);
 }
 
@@ -133,15 +132,14 @@ void MenuScene::initMenu(){
     title->adjustSize(); //自適應文本內容的大小
     title->move(width/2-title->geometry().width()/2,30); //將標題水平置中
 
-    /* 按鈕的默認樣式 */
+    /* 按鈕的默認大小 */
     QSize btn_defaultSize(150,75);
-    QFont btn_defaultFont("Adobe 繁黑體 Std B",14);
 
     /* 設置【開始遊戲】按鈕 */
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
 
     startBtn->setIcon(QIcon("./img/start.png"));
-    createBtn(startBtn,btn_defaultSize,btn_defaultFont,title->geometry().y()+title->geometry().height(),30);
+    createBtn(startBtn,btn_defaultSize,title->geometry().y()+title->geometry().height(),30);
     //連接遊戲場景、遊戲參數設置的窗口
     connect(startBtn,&QPushButton::clicked,this,&MenuScene::enterSettingScene);
 
@@ -149,7 +147,7 @@ void MenuScene::initMenu(){
     QPushButton* rankBtn = new QPushButton("排行榜",this);
 
     rankBtn->setIcon(QIcon("./img/rank.png"));
-    createBtn(rankBtn,btn_defaultSize,btn_defaultFont,startBtn->geometry().y()+startBtn->geometry().height(),30);
+    createBtn(rankBtn,btn_defaultSize,startBtn->geometry().y()+startBtn->geometry().height(),30);
     connect(rankBtn,&QPushButton::clicked,this,&MenuScene::enterRankListScene);
 
 
@@ -157,7 +155,7 @@ void MenuScene::initMenu(){
     QPushButton* selfInfoBtn = new QPushButton("個人信息",this);
 
     selfInfoBtn->setIcon(QIcon("./img/selfInfo.png"));
-    createBtn(selfInfoBtn,btn_defaultSize,btn_defaultFont,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
+    createBtn(selfInfoBtn,btn_defaultSize,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
     connect(selfInfoBtn,&QPushButton::clicked,this,&MenuScene::showSelfInfo);
 
 
@@ -165,7 +163,7 @@ void MenuScene::initMenu(){
     QPushButton* logoutBtn = new QPushButton("登出",this);
     logoutBtn->setIcon(QIcon("./img/leave.png"));
 
-    createBtn(logoutBtn,btn_defaultSize,btn_defaultFont,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
+    createBtn(logoutBtn,btn_defaultSize,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
     connect(logoutBtn,&QPushButton::clicked,this,&MenuScene::logout);
 
 }

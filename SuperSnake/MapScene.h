@@ -46,6 +46,7 @@ private:
     int speed; //蛇的速度
     int score = 0;  //分數
     QLabel* scoreLabel; //分數的Label
+    QColor* snakeColor = nullptr; //儲存蛇的顏色
 
 };
 

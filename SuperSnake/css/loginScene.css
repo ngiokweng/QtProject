@@ -1,0 +1,41 @@
+LoginScene > QPushButton{
+    background-color: transparent;
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 5px;
+    border-color: rgba(0, 0, 0, 0.6);
+    color:rgba(0, 0, 0, 0.8);
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    padding: 10px;
+    font-size: 20px;
+}
+
+LoginScene > QPushButton:hover{
+
+   border-color:rgba(35, 209, 0, 0.3);
+   color:rgba(35, 209, 0, 0.9);
+}
+
+LoginScene > QLabel{
+    color:rgb(0, 0, 0);
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    font-size: 28px;
+    padding: 3px;
+}
+
+LoginScene > QLineEdit{
+    font-size: 26px;
+    font-family: Adobe 繁黑體 Std B;
+    border:none;
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 2px;
+    background-color: rgba(255,255,255,0.6);
+    padding: 3px;
+    margin-left: 5px;
+}
+LoginScene > QLineEdit:focus{
+    border-color: blueviolet;
+}
