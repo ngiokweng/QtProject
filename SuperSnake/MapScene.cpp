@@ -20,11 +20,21 @@ MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMa
 {
     srand((unsigned)time(NULL)); //亂數種
 
+    //載入和設置CSS樣式表
+    QFile cssFile;
+    cssFile.setFileName("./css/mapScene.css");
+    cssFile.open(QIODevice::ReadOnly);
+    QString styleSheet = cssFile.readAll();
+    cssFile.close();
+    this->setStyleSheet(styleSheet);
+
+    //對界面進行基本的設置(只需做一次)
     int mapWidth = col*snake->getSize(),mapHeight = row*snake->getSize();
     int controlBarHeight = 50;
-
     this->setFixedSize(mapWidth,mapHeight+controlBarHeight);
     this->setWindowTitle("【SuperSnake】遊戲界面");
+
+    //主要的初始化
     this->initControlBar(mapWidth,mapHeight,controlBarHeight); //初始化最底下的控制欄
     this->initMap();
 
@@ -314,6 +324,7 @@ void MapScene::initMap(){
     //重置分數
     score = 0;
     scoreLabel->setText(QString("分數：%1").arg(score));
+    scoreLabel->adjustSize();
 
 
 

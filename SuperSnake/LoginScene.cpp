@@ -64,15 +64,15 @@ void LoginScene::loginAccount(){
 
 //初始化界面
 void LoginScene::init(){
-    //載入CSS樣式
+    //載入和設置CSS樣式表
     QFile cssFile;
     cssFile.setFileName("./css/loginScene.css");
     cssFile.open(QIODevice::ReadOnly);
     QString styleSheet = cssFile.readAll();
     cssFile.close();
+    this->setStyleSheet(styleSheet);
 
     this->setFixedSize(width,height);
-    this->setStyleSheet(styleSheet);
     /* 根據mode來設置標題 */
     QString title = "【SuperSnake】用戶登錄";
 

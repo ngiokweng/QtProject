@@ -64,6 +64,11 @@ void MenuScene::enterRankListScene(){
 
 //登出
 void MenuScene::logout(){
+    //讓用戶確定是否要登出
+    QMessageBox::StandardButtons confirm=QMessageBox::question(this,"提示","確定要登出？",QMessageBox::Yes|QMessageBox::No,QMessageBox::No);
+    if(confirm == QMessageBox::No)
+        return;
+
     LoginScene* loginScene = new LoginScene(this,600,400);
 
     // 當loginScene發送backToMenu信號時，就返回到MenuScene

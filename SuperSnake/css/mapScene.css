@@ -1,0 +1,28 @@
+MapScene > QPushButton{
+    background-color: transparent;
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 3px;
+    border-color: rgba(0, 0, 0, 0.6);
+    color:rgba(0, 0, 0, 0.8);
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    font-size: 14pt;
+    padding: 3px;
+}
+
+
+MapScene > QPushButton:hover{
+    border-color: rgb(1, 107, 194);
+    color: rgb(1, 107, 194);
+}
+
+MapScene > QLabel{
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    border: 4px solid rgb(211, 3, 253);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    font-size: 14pt;
+}

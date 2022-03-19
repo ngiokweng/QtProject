@@ -1,0 +1,58 @@
+SettingScene QComboBox{
+
+    color:#000000;
+    font-size:14px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    font-size: 14pt;
+    font-family: Adobe 繁黑體 Std B;
+
+    background-color: rgba(128, 128, 128, 0.6);
+    color: white;
+}
+
+/* 下拉按钮 */
+SettingScene QComboBox::drop-down {
+    background-color: transparent;
+}
+
+/* 下拉按钮图片 */
+SettingScene QComboBox::down-arrow {
+    border-image: url(./img/arrow-down.png);
+}
+
+/* 下拉列表里的颜色 */
+SettingScene QComboBox QAbstractItemView {
+    border: 2px solid darkgray;
+    selection-background-color: rgba(120, 7, 250, 0.3);
+
+}
+
+
+
+SettingScene > QPushButton{
+    background-color: transparent;
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 5px;
+    border-color: rgba(0, 0, 0, 0.6);
+    color:rgba(0, 0, 0, 0.8);
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    font-size: 14pt;
+    padding: 5px;
+}
+
+SettingScene > QPushButton:hover{
+    border-color: rgb(0, 217, 255);
+    color: rgb(0, 217, 255);
+}
+
+SettingScene > QLabel{
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    font-size: 14pt;
+    padding: 1px;
+    border-right: none;
+}
+
