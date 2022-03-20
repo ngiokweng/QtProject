@@ -3,6 +3,7 @@
 
 #include <Point.h>
 #include <vector>
+#include <QColor>
 
 using std::vector;
 
@@ -26,12 +27,15 @@ public:
     void setDir(direction dir); //設置蛇的方向
     void addNum();
     void init(); //將蛇初始化到基本形態
+    QColor getSnakeColor();
+    void setSnakeColor(QColor color);
 
 private:
     vector<Point> coordinates; //儲存蛇座標的數組
     int s_num; //儲存蛇的節數
     int s_size; //儲存蛇的大小( 每節蛇身都為正方形 )
     int dir; //蛇的方向
+    QColor snakeColor; //蛇的顏色
 
 };
 

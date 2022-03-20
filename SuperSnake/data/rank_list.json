@@ -1,8 +1,8 @@
 {
     "1": {
         "1": {
-            "date": "2022-03-10",
-            "maxScore": 600,
+            "date": "2022-03-19",
+            "maxScore": 1400,
             "userName": "root"
         },
         "123": {
@@ -10,10 +10,20 @@
             "maxScore": 900,
             "userName": "123"
         },
+        "aa1234": {
+            "date": "2022-03-20",
+            "maxScore": 3900,
+            "userName": "aa1234"
+        },
         "asd": {
             "date": "2022-03-12",
             "maxScore": 2100,
             "userName": "asd"
+        },
+        "j1": {
+            "date": "2022-03-13",
+            "maxScore": 700,
+            "userName": "jason666"
         }
     },
     "10": {
@@ -25,8 +35,8 @@
     },
     "2": {
         "1": {
-            "date": "2022-03-10",
-            "maxScore": 1000,
+            "date": "2022-03-13",
+            "maxScore": 1300,
             "userName": "root"
         },
         "asd": {
@@ -54,8 +64,8 @@
     },
     "4": {
         "1": {
-            "date": "2022-03-10",
-            "maxScore": 200,
+            "date": "2022-03-19",
+            "maxScore": 500,
             "userName": "root"
         },
         "asd": {
@@ -66,8 +76,8 @@
     },
     "5": {
         "1": {
-            "date": "2022-03-11",
-            "maxScore": 400,
+            "date": "2022-03-13",
+            "maxScore": 500,
             "userName": "root"
         }
     },

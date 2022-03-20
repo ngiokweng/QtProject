@@ -139,7 +139,7 @@ void MapScene::onGameRunning(){
         scoreLabel->setText(QString("分數：%1").arg(score));
         scoreLabel->adjustSize(); //防止分數顯示不完全
 
-        *snakeColor = QColor(rand()%256,rand()%256,rand()%256); //改變蛇的顏色
+        snake->setSnakeColor(QColor(rand()%256,rand()%256,rand()%256)); //改變蛇的顏色
     }
     //判斷蛇是否死亡
     if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
@@ -203,10 +203,11 @@ void MapScene::initControlBar(int mapWidth,int mapHeight,int controlBarHeight){
 
 // 畫蛇的函數
 void MapScene::drawSnake(QPainter& painter,std::vector<Point>& snakeCoords,int snakeNum,int snakeSize){
+    QColor snakeColor = snake->getSnakeColor();
     //設置畫家各項屬性
-    painter.setPen(QPen(*snakeColor));
+    painter.setPen(QPen(snakeColor));
 
-    painter.setBrush(QBrush(*snakeColor));
+    painter.setBrush(QBrush(snakeColor));
 
     //畫蛇
     for(int i = 0;i<snakeNum;i++){
@@ -314,8 +315,7 @@ void MapScene::initMap(){
     if(!food)food = new Food(snake->getSize());
     food->createFood(this->row,this->col,snake->getCoords());
 
-    //初始化蛇的顏色
-    if(!snakeColor)snakeColor = new QColor(rand()%256,rand()%256,rand()%256);
+
     //初始化蛇
     snake->init();
 
@@ -336,9 +336,6 @@ MapScene::~MapScene(){
         delete food;
         food = nullptr;
     }
-    if(snakeColor!=nullptr){
-        delete snakeColor;
-        snakeColor = nullptr;
-    }
+
 
 }

@@ -1,0 +1,64 @@
+RankListScene > QPushButton{
+    background-color: transparent;
+    border-radius: 5px;
+    border-style: outset;
+    border-width: 3px;
+    border-color: rgba(0, 0, 0, 0.6);
+    color:rgba(0, 0, 0, 0.8);
+    font-weight:bolder;
+    font-family: Adobe 繁黑體 Std B;
+    font-size: 14pt;
+    padding: 5px;
+}
+
+RankListScene > QPushButton:hover{
+    border-color:brown;
+    color: brown;
+}
+
+RankListScene QTableWidget{
+    background-color:#00ccff ;
+}
+
+RankListScene QTableWidget::item
+{
+    border-bottom:3px solid #FFF;
+    color: rgb(70, 70, 70);
+    font-size: 20pt;
+
+}
+
+RankListScene QTableWidget::item::selected  
+{
+    color:rgb(255, 187, 0);                    
+    background:#ff3f6f;      
+}
+
+/*表头*/
+RankListScene QHeaderView::section{
+    text-align:center;
+    background:#ff46f0;
+    color:#FFF;
+    border:1px solid #242424;
+    border-left-width:0;
+    font-size: 16pt;
+    font-family: Adobe 繁黑體 Std B;
+    border-bottom:3px solid #FFF;
+}
+
+
+/* 標籤按鈕 */
+RankListScene QTabBar::tab {
+    min-width:80px;
+    color: white;
+    background-color:
+    qlineargradient(x1:0, y1:0, x2:0, y2:1, stop: 0 purple, stop: 1 plum);
+    border: 2px solid;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding:5px;
+
+}	
+RankListScene QTabBar::tab:!selected {margin-top: 5px;} 
+
+

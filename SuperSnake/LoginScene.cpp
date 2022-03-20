@@ -20,10 +20,18 @@ void LoginScene::regAccount(){
     QString userId = userIdInput->text();
     QString userPwd = userPwdInput->text();
 
+    //判斷是否為空
     if(userName == "" || userId == "" || userPwd == ""){
-        QMessageBox::critical (this,"錯誤！！！","用戶名/帳戶/密碼不能為空！！！");
+        QMessageBox::critical (this,"錯誤！！！","用戶名/帳號/密碼不能為空！！！");
         return;
     }
+    //判斷帳號、密碼、用戶名的長度[6~18]
+    if(userId.length()<6 || userId.length()>18 || userPwd.length()<6 || userPwd.length()>18){
+        QMessageBox::critical (this,"錯誤！！！","用戶名/帳號/密碼的長度限制為[6~18]");
+        return;
+    }
+
+
     //返回true代表注冊驗證成功
     bool ret = User::createAccount(userName,userId,userPwd);
     if(!ret){
@@ -48,6 +56,7 @@ void LoginScene::loginAccount(){
         QMessageBox::critical (this,"錯誤！！！","帳戶/密碼不能為空！！！");
         return;
     }
+
     //返回true代表登錄驗證成功
     bool ret = User::loginAccount(userId,userPwd);
     if(!ret){

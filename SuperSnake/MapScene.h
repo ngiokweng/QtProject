@@ -23,8 +23,6 @@ public:
     bool isSnakeDead(std::vector<Point>& snakeCoords,int& snakeSize,int& snakeNum); //檢查蛇的死活
     bool isSnakeEat(std::vector<Point>& snakeCoords,Point& foodCoord);  //判斷蛇有無進食
     bool updateRankList();  //更新排行榜
-    bool updateWebRankList(QString url);
-
 
 public slots:
     void onGameRunning();
@@ -46,7 +44,6 @@ private:
     int speed; //蛇的速度
     int score = 0;  //分數
     QLabel* scoreLabel; //分數的Label
-    QColor* snakeColor = nullptr; //儲存蛇的顏色
 
 };
 

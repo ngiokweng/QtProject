@@ -8,7 +8,6 @@ SettingScene::SettingScene(QWidget *parent,int width,int height) : QMainWindow(p
 {
     init();
 
-
 }
 
 SettingScene::~SettingScene(){

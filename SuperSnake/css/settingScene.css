@@ -54,5 +54,6 @@ SettingScene > QLabel{
     font-size: 14pt;
     padding: 1px;
     border-right: none;
+    background-color: rgba(74, 92, 255, 0.575);
 }
 

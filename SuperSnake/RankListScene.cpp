@@ -59,6 +59,14 @@ void RankListScene::getRankInfo(){
 
 //初始化當前場景
 void RankListScene::init(){
+    //載入和設置CSS樣式表
+    QFile cssFile;
+    cssFile.setFileName("./css/rankListScene.css");
+    cssFile.open(QIODevice::ReadOnly);
+    QString styleSheet = cssFile.readAll();
+    cssFile.close();
+    this->setStyleSheet(styleSheet);
+
     this->setFixedSize(width,height);
     this->setWindowTitle("【SuperSnake】排行榜");
 
@@ -75,7 +83,7 @@ void RankListScene::init(){
     //用來儲存10個標籤頁(對應10個不同速度的排行榜)
     QWidget* tabItems[10];
     //用來儲存10個排行榜的展示用的表格
-    QTableWidget* tabels[10];
+    QTableWidget* tables[10];
 
 
     /* 初始化並設置所有速度的排行榜 */
@@ -87,31 +95,48 @@ void RankListScene::init(){
         tabItems[i]->setFixedSize(this->width,this->height-tabBarHeight); //設置所有標籤頁的大小
 
         /* 表格的設置 */
-        tabels[i] = new QTableWidget(tabItems[i]);
-        tabels[i]->setFixedSize(tabItems[i]->size()); //當前表格大小為所在標籤頁的大小
-        tabels[i]->setColumnCount(3); //列數為3
-        tabels[i]->setRowCount(recordNum); //根據當前速度的排行榜來設置行數
-        tabels[i]->horizontalHeader()->setDefaultSectionSize(width/3); //設置列寬，這裡平均為3份，同等大小
-        tabels[i]->setHorizontalHeaderLabels(QStringList()<<"用戶名"<<"最高分數"<<"創建時間"); //設置表頭元素
-        tabels[i]->setEditTriggers(QAbstractItemView::NoEditTriggers); //將表格設為"只讀"
+        tables[i] = new QTableWidget(tabItems[i]);
+        tables[i]->setFixedSize(tabItems[i]->size()); //當前表格大小為所在標籤頁的大小
+        tables[i]->setColumnCount(4); //列數為4
+        tables[i]->setRowCount(recordNum); //根據當前速度的排行榜來設置行數
+
+        /*設置列寬*/
+        tables[i]->setColumnWidth(0,150);
+        tables[i]->setColumnWidth(1,350);
+        tables[i]->setColumnWidth(2,350);
+        tables[i]->setColumnWidth(3,350);
+
+        tables[i]->setHorizontalHeaderLabels(QStringList()<<"排名"<<"用戶名"<<"最高分數"<<"創建時間"); //設置表頭元素
+        //取消行號的方法
+        tables[i]->verticalHeader()->setVisible(false);
+
+
+        tables[i]->setEditTriggers(QAbstractItemView::NoEditTriggers); //將表格設為"只讀"
 
         //構造行
         for(int k = 0;k < recordNum;k++){
             int j=0;
+
+            QTableWidgetItem* rankNo = new QTableWidgetItem(QString::number(k+1));
             QTableWidgetItem* score = new QTableWidgetItem(QString::number(rankInfo[i+1][k].first));
             QTableWidgetItem* userName = new QTableWidgetItem(rankInfo[i+1][k].second.first);
             QTableWidgetItem* date = new QTableWidgetItem(rankInfo[i+1][k].second.second);
+
+            /* 設置部分樣式 */
+            rankNo->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
+            rankNo->setFont(QFont("Adobe 繁黑體 Std B",14));
             score->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
-            score->setFont(QFont("Adobe 楷体 Std R",14));
+            score->setFont(QFont("Adobe 繁黑體 Std B",14));
             userName->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
-            userName->setFont(QFont("Adobe 楷体 Std R",14));
+            userName->setFont(QFont("Adobe 繁黑體 Std B",14));
             date->setTextAlignment(Qt::AlignHCenter |  Qt::AlignVCenter);
-            date->setFont(QFont("Adobe 楷体 Std R",14));
+            date->setFont(QFont("Adobe 繁黑體 Std B",14));
 
             //k代表行，j代表列
-            tabels[i]->setItem(k,j,userName);
-            tabels[i]->setItem(k,++j,score);
-            tabels[i]->setItem(k,++j,date);
+            tables[i]->setItem(k,j,rankNo);
+            tables[i]->setItem(k,++j,userName);
+            tables[i]->setItem(k,++j,score);
+            tables[i]->setItem(k,++j,date);
         }
 
         tabWidget->addTab(tabItems[i],QString("%1倍速").arg(i+1));
@@ -119,9 +144,8 @@ void RankListScene::init(){
 
     //返回的按鈕
     QPushButton* backBtn = new QPushButton("返回",this);
-    backBtn->setFont(QFont("Adobe 楷体 Std R",14));
     backBtn->adjustSize();
-    backBtn->move(width-backBtn->width(),0);
+    backBtn->move(width-backBtn->width()-5,5);
     connect(backBtn,&QPushButton::clicked,[this](){
         this->close();
         //發送返回【設定界面】的信號

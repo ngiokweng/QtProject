@@ -1,11 +1,13 @@
 #include "Snake.h"
-
+#include <time.h>
 Snake::Snake(int snakeNum,int snakeSize):s_num(snakeNum),s_size(snakeSize)
 {
     this->init();
 }
 
 void Snake::init(){
+    srand(unsigned(time(0))); //亂數種
+
     //初始化長度
     s_num = 3;
     //清空座標數組
@@ -19,6 +21,9 @@ void Snake::init(){
     }
     //默認方向：右
     dir = RIGHT;
+
+    //隨機蛇的顏色
+    snakeColor = QColor(rand()%256,rand()%256,rand()%256);
 }
 
 //獲取蛇的大小
@@ -81,4 +86,11 @@ void Snake::addNum(){
     loc.x = -9999;
     loc.y = -9999;
     coordinates.push_back(loc);
+}
+
+QColor Snake::getSnakeColor(){
+    return snakeColor;
+}
+void Snake::setSnakeColor(QColor color){
+    snakeColor = color;
 }
