@@ -16,7 +16,7 @@
 
 
 
-MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMainWindow(parent),row(row),col(col),snake(snake),speed(speed)
+MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : BaseScene(parent),row(row),col(col),snake(snake),speed(speed)
 {
     srand((unsigned)time(NULL)); //亂數種
 
@@ -37,6 +37,10 @@ MapScene::MapScene(QWidget *parent,int row,int col,Snake* snake,int speed) : QMa
     //主要的初始化
     this->initControlBar(mapWidth,mapHeight,controlBarHeight); //初始化最底下的控制欄
     this->initMap();
+
+    //介紹遊戲操作的對話框
+    QMessageBox::information(this,"提示","【操作說明】使用W、A、S、D改變蛇的運動方向(注：WASD對應上下左右)");
+
 
     connect(gameTimer,&QTimer::timeout,this,&MapScene::onGameRunning);
 

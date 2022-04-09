@@ -4,10 +4,9 @@
 #include <QLabel>
 #include <QDebug>
 
-SettingScene::SettingScene(QWidget *parent,int width,int height) : QMainWindow(parent),width(width),height(height)
+SettingScene::SettingScene(QWidget *parent,int width,int height) : BaseScene(parent,width,height)
 {
     init();
-
 }
 
 SettingScene::~SettingScene(){

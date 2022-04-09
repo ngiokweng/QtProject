@@ -1,13 +1,13 @@
 #ifndef SETTINGSCENE_H
 #define SETTINGSCENE_H
 
-#include <QMainWindow>
+#include "BaseScene.h"
 #include <QLineEdit>
 #include "MapScene.h"
 #include "Snake.h"
 #include <QComboBox>
 
-class SettingScene : public QMainWindow
+class SettingScene : public BaseScene
 {
     Q_OBJECT
 public:
@@ -21,8 +21,6 @@ signals:
     void backToMenuScene();
 
 private:
-    int width;  //【設置界面】的寬
-    int height; //【設置界面】的高
     Snake* snake = nullptr;
     QComboBox* colSelect; //地圖[列數]選擇框
     QComboBox* rowSelect; //地圖[行數]選擇框

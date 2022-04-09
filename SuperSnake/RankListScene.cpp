@@ -12,7 +12,7 @@
 #include <data.h>
 #include <algorithm>
 
-RankListScene::RankListScene(QWidget *parent,int width,int height) : QMainWindow(parent),width(width),height(height)
+RankListScene::RankListScene(QWidget *parent,int width,int height) : BaseScene(parent,width,height)
 {
     getRankInfo();
     init();
@@ -24,6 +24,23 @@ RankListScene::RankListScene(QWidget *parent,int width,int height) : QMainWindow
 rankInfo[speed][i].first：代表speed速度排行榜中，第i條記錄的分數
 rankInfo[speed][i].second.first：代表speed速度排行榜中，第i條記錄，的用戶名
 rankInfo[speed][i].second.second：代表speed速度排行榜中，第i條記錄，的創建時間
+*/
+
+
+/* 排行榜.json的儲存格式：
+ * {
+ *   "speed1":{
+ *          "userId": {
+                "maxScore": XXX,
+                "userName": "XXX"
+                "date":"XXX"
+            }
+ *    },
+ *
+ *   "speed2":{},
+ *   "speed3":{}
+ *    //....
+ * }
 */
 void RankListScene::getRankInfo(){
     //文件讀入操作

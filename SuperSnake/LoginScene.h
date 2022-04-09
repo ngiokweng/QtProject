@@ -1,16 +1,18 @@
 #ifndef LOGINSCENE_H
 #define LOGINSCENE_H
 
-#include <QMainWindow>
+#include "BaseScene.h"
 #include <QLineEdit>
+#include <QComboBox>
 
 
-class LoginScene : public QMainWindow
+
+class LoginScene : public BaseScene
 {
     Q_OBJECT
 public:
-    explicit LoginScene(QWidget *parent = nullptr,int w = 800,int h = 600);
-    void init(); //初始化界面
+    explicit LoginScene(QWidget *parent,int w,int h);
+    void initScene(); //初始化場景
 
 //信號
 signals:
@@ -23,11 +25,10 @@ public:
 
 
 private:
-    int width;  //【登錄/注冊】界面的寛
-    int height; //【登錄/注冊】界面的高
     QLineEdit* userNameInput; //用戶名輸入框
     QLineEdit* userIdInput; //帳號輸入框
     QLineEdit* userPwdInput; //密碼輸入框
+    QComboBox* serverSelect;  //Server選擇框
 
 };
 

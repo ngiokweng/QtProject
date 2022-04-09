@@ -41,6 +41,6 @@ void Food::createFood(int map_row,int map_col,vector<Point> snakeCoords){
 }
 
 //返回食物座標
-Point Food::getCoor(){
+Point Food::getCoor()const{
     return this->coordinate;
 }

@@ -12,18 +12,11 @@
 #include "User.h"
 #include <QDateTime>
 
-MenuScene::MenuScene(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::MenuScene)
+MenuScene::MenuScene(QWidget *parent,int w,int h)
+    : BaseScene(parent,w,h)
 {
-    ui->setupUi(this);
-    //設置菜單界面的大小
-    this->width = 800;
-    this->height = 600;
     initMenu(); //初始化菜單界面
-
     enterLoginScene();  //進入登錄界面
-
 }
 
 //進入【登錄界面】
@@ -175,5 +168,4 @@ void MenuScene::initMenu(){
 
 MenuScene::~MenuScene()
 {
-    delete ui;
 }

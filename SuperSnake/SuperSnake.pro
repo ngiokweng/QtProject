@@ -16,9 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    BaseScene.cpp \
     Food.cpp \
     LoginScene.cpp \
     MapScene.cpp \
+    NetworkManager.cpp \
     RankListScene.cpp \
     SettingScene.cpp \
     Snake.cpp \
@@ -27,10 +29,12 @@ SOURCES += \
     MenuScene.cpp
 
 HEADERS += \
+    BaseScene.h \
     Food.h \
     LoginScene.h \
     MapScene.h \
     MenuScene.h \
+    NetworkManager.h \
     Point.h \
     RankListScene.h \
     SettingScene.h \

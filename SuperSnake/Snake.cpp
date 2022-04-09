@@ -27,12 +27,12 @@ void Snake::init(){
 }
 
 //獲取蛇的大小
-int Snake::getSize(){
+int Snake::getSize()const{
     return s_size;
 }
 
 //獲取蛇的節數
-int Snake::getNum(){
+int Snake::getNum()const{
     return s_num;
 }
 //獲取蛇的座標
@@ -75,7 +75,7 @@ void Snake::setDir(direction dir){
     this->dir = dir;
 }
 //獲取蛇當前的運動方向
-int Snake::getDir(){
+int Snake::getDir()const{
     return this->dir;
 }
 
@@ -88,7 +88,7 @@ void Snake::addNum(){
     coordinates.push_back(loc);
 }
 
-QColor Snake::getSnakeColor(){
+QColor Snake::getSnakeColor()const{
     return snakeColor;
 }
 void Snake::setSnakeColor(QColor color){

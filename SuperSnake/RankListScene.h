@@ -1,7 +1,7 @@
 #ifndef RANKLISTSCENE_H
 #define RANKLISTSCENE_H
 
-#include <QMainWindow>
+#include "BaseScene.h"
 #include <map>
 #include <vector>
 #include <QString>
@@ -11,7 +11,7 @@ using std::map;
 using std::vector;
 using std::pair;
 
-class RankListScene : public QMainWindow
+class RankListScene : public BaseScene
 {
     Q_OBJECT
 public:
@@ -21,9 +21,8 @@ public:
 
 signals:
     void backToMenuScene();
+
 private:
-    int width;
-    int height;
     map<int,vector<QPair<int,QPair<QString,QString>>>> rankInfo; //rankInfo[speed][i].first：代表speed速度排行榜中，第i條記錄的分數
                                                                  //rankInfo[speed][i].second.first：代表speed速度排行榜中，第i條記錄，的用戶名
                                                                 //rankInfo[speed][i].second.second：代表speed速度排行榜中，第i條記錄，的創建時間

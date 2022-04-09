@@ -1,7 +1,7 @@
 #ifndef MAPSCENE_H
 #define MAPSCENE_H
 
-#include <QMainWindow>
+#include "BaseScene.h"
 #include "Snake.h"
 #include <QTimer>
 #include <QKeyEvent>
@@ -9,7 +9,7 @@
 #include <QPainter>
 #include <QLabel>
 
-class MapScene : public QMainWindow
+class MapScene : public BaseScene
 {
     Q_OBJECT
 public:

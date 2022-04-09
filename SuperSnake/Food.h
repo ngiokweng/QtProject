@@ -11,7 +11,7 @@ class Food
 public:
     Food(int foodSize);
     void createFood(int map_row,int map_col,vector<Point> snakeCoords); //創建食物
-    Point getCoor(); //返回食物座標
+    Point getCoor()const; //返回食物座標
 
 private:
     Point coordinate;
