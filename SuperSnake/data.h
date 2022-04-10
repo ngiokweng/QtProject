@@ -15,7 +15,7 @@ const QString rankListPath = "./data/rank_list.json";  //儲存當前登錄用�
 
 /* 網路JSON相關的東西 */
 const QString webJsonUrl_AC = "https://json.extendsclass.com/bin/288dbb48fe3a"; //網路JSON的請求Url【For帳號】
-const QString webJsonUrl_RL = "https://json.extendsclass.com/bin/288dbb48fe3a"; //網路JSON的請求Url【For排行榜】
+const QString webJsonUrl_RL = "https://json.extendsclass.com/bin/3df7aacd64c1"; //網路JSON的請求Url【For排行榜】
 const QByteArray securityKey = "i_am_ngiokweng";  //網路JSON的請求密鑰
 
 

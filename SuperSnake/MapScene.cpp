@@ -9,10 +9,7 @@
 #include <QJsonObject>
 #include "User.h"
 #include <QDateTime>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QEventLoop>
+#include "NetworkManager.h"
 
 
 
@@ -122,6 +119,54 @@ bool MapScene::updateRankList(){
 
 }
 
+bool MapScene::updateRankList(QString url){
+    QByteArray rankListData = NetworkManager::get(url);
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(rankListData); //將數據解析為Json格式
+    QJsonObject jsonObj = jsonDoc.object(); //轉為QJsonObject類型
+
+    /* 獲取各種信息 */
+    QString userId = User::getCurrentUserId();
+    QString userName = User::getCurrentUserName();
+    QString speed = QString::number(this->speed);
+    QDateTime current_date_time = QDateTime::currentDateTime();
+    QString current_date =current_date_time.toString("yyyy-MM-dd");
+
+
+    QJsonObject speedObj = jsonObj[speed].toObject();
+
+    //當【指定速度的排行榜】不包含當前的userId時，代表第一次遊玩該速度，可直接記錄該速度的排行榜中
+    if(!speedObj.contains(userId)){
+        QJsonObject newRankRecord;
+        newRankRecord.insert("userName",userName);
+        newRankRecord.insert("maxScore",score);
+        newRankRecord.insert("date",current_date);
+        speedObj.insert(userId,newRankRecord);
+
+    }else{
+        int maxScore = speedObj[userId].toObject()["maxScore"].toInt();
+        //當局分數<=最高分時，不作記錄，直接返回
+        if(score<=maxScore){
+            return false;
+        }
+
+        //更新最高分
+        QJsonObject userIdObj = speedObj[userId].toObject();
+        userIdObj["maxScore"] = score;
+        userIdObj["date"] = current_date;
+        speedObj[userId] = userIdObj;
+
+
+    }
+
+
+    /* 更新排行榜內容 */
+    jsonObj[speed] = speedObj;
+    jsonDoc.setObject(jsonObj);
+    NetworkManager::put(url,jsonDoc);
+    return true;
+}
+
 void MapScene::onGameRunning(){
     snake->move();
     moveFlag = true; //表示上一次的【方向指令】已執行完成，可以接收下一個【方向指令】
@@ -148,7 +193,13 @@ void MapScene::onGameRunning(){
     //判斷蛇是否死亡
     if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
         gameTimer->stop();
-        bool ret = updateRankList();
+        QString server = User::getCurrentServer();
+        bool ret;
+        if(server == "local")
+            ret = updateRankList();
+        else
+            ret = updateRankList(webJsonUrl_RL);
+
         QString resultStr = QString("你的分數為：%1").arg(score);
         if(!ret){
             resultStr+="  >>排行榜沒有任何改變@@<<";

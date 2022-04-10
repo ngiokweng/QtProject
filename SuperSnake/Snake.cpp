@@ -6,7 +6,7 @@ Snake::Snake(int snakeNum,int snakeSize):s_num(snakeNum),s_size(snakeSize)
 }
 
 void Snake::init(){
-    srand(unsigned(time(0))); //亂數種
+    srand(unsigned(time(0))); //設置隨機數亂數種
 
     //初始化長度
     s_num = 3;

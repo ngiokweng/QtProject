@@ -40,3 +40,26 @@ LoginScene > QLineEdit{
 LoginScene > QLineEdit:focus{
     border-color: blueviolet;
 }
+
+LoginScene > QComboBox{
+    font-family: Adobe 繁黑體 Std B;
+    font-size: 14pt;
+    padding: 3px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 0 8px 0 8px;
+}
+
+/* 下拉按钮 */
+LoginScene > QComboBox::drop-down {
+    background-color: transparent;
+}
+
+/* 下拉按钮图片 */
+LoginScene > QComboBox::down-arrow {
+    border-image: url(./img/arrow-down.png);
+}
+/*當為下拉狀態時*/
+LoginScene > QComboBox:on{
+    border-color: blueviolet;
+}

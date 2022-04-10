@@ -105,7 +105,8 @@ void User::setCurrentUser(QString userName,QString userId){
     QJsonDocument currentUser_jsonDoc;
     QJsonObject currentUser_jsonObj{
         {"userId",userId},
-        {"userName",userName}
+        {"userName",userName},
+        {"server","local"}
     };
     int time = QDateTime::currentDateTime().toTime_t();
     currentUser_jsonObj.insert("loginTime",time);
@@ -140,7 +141,8 @@ void User::setCurrentUser_Web(QString userName,QString userId){
     QJsonDocument currentUser_jsonDoc;
     QJsonObject currentUser_jsonObj{
         {"userId",userId},
-        {"userName",userName}
+        {"userName",userName},
+        {"server","web"}
     };
     int time = QDateTime::currentDateTime().toTime_t();
     currentUser_jsonObj.insert("loginTime",time);
@@ -194,6 +196,20 @@ int User::getCurrentUserLoginTime(){
 
     currentUserFile.close();
     return jsonObj["loginTime"].toInt();
+}
+
+QString User::getCurrentServer(){
+    /* 打開文件指定文件 */
+    QFile currentUserFile;
+    currentUserFile.setFileName(currentUserPath);
+    currentUserFile.open(QIODevice::ReadOnly);
+    QByteArray userData = currentUserFile.readAll();
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(userData);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    currentUserFile.close();
+    return jsonObj["server"].toString();
 }
 
 bool User::createWebAccount(QString userName,QString userId,QString userPwd){

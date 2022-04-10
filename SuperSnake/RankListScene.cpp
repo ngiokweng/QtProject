@@ -11,10 +11,16 @@
 #include <QFile>
 #include <data.h>
 #include <algorithm>
+#include "User.h"
+#include "NetworkManager.h"
 
 RankListScene::RankListScene(QWidget *parent,int width,int height) : BaseScene(parent,width,height)
 {
-    getRankInfo();
+    QString server = User::getCurrentServer();
+    if(server == "local")
+        getRankInfo();
+    else
+        getRankInfo(webJsonUrl_RL);
     init();
 }
 
@@ -63,6 +69,33 @@ void RankListScene::getRankInfo(){
         }
     }
     rankListFile.close();
+
+    //分別對不同速度的排行榜，按分數由高到低排序
+    for(auto& ele:rankInfo){
+        sort(ele.second.begin(),ele.second.end(),[=](QPair<int,QPair<QString,QString>>& a1,QPair<int,QPair<QString,QString>>& a2){
+            return a1.first>a2.first;
+        });
+    }
+
+
+}
+
+void RankListScene::getRankInfo(QString url){
+    QByteArray rankData = NetworkManager::get(url);
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(rankData);
+    QJsonObject jsonObj = jsonDoc.object();
+
+    //按rankInfo的儲存格式讀入所有排行榜的資料
+    for(auto& speed:jsonObj.keys()){
+        QJsonObject speedObj = jsonObj[speed].toObject();
+        for(auto& userId:speedObj.keys()){
+            QJsonObject userObj = speedObj[userId].toObject();
+            rankInfo[speed.toInt()].emplace_back(qMakePair(userObj["maxScore"].toInt(),
+                                                 qMakePair(userObj["userName"].toString(),userObj["date"].toString())));
+
+        }
+    }
 
     //分別對不同速度的排行榜，按分數由高到低排序
     for(auto& ele:rankInfo){

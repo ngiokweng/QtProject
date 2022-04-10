@@ -10,10 +10,20 @@
             "maxScore": 900,
             "userName": "123"
         },
+        "12345678": {
+            "date": "2022-04-09",
+            "maxScore": 1200,
+            "userName": "12345678"
+        },
         "aa1234": {
             "date": "2022-03-20",
             "maxScore": 3900,
             "userName": "aa1234"
+        },
+        "aaa1233": {
+            "date": "2022-04-10",
+            "maxScore": 200,
+            "userName": "aaa1233"
         },
         "asd": {
             "date": "2022-03-12",

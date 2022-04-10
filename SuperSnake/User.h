@@ -17,6 +17,7 @@ public:
     static void setCurrentUser_Web(QString userName,QString userId);  //記錄當前登錄用戶(For【網路JSON】)
     static QString getCurrentUserId();    //取得當前登錄用戶的ID
     static QString getCurrentUserName();  //取得當前登錄用戶的Name
+    static QString getCurrentServer(); //獲取當前伺服器
     static int getCurrentUserLoginTime(); //取得當前登錄用戶的登錄時間戳
 
 };
