@@ -8,7 +8,6 @@
 #include "User.h"
 
 
-
 LoginScene::LoginScene(QWidget *parent,int w,int h) : BaseScene(parent,w,h)
 { 
     this->initScene();
