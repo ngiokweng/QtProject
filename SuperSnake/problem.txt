@@ -1,9 +1,8 @@
 Problem:
-1. backToMenu用多態實現
-2. 繼承的關係？
+1.排行榜日期有問題？(編碼or??)
 
 Idea:
 1. 本地Server和網路Server(網路Server請求404時要彈出提示?)
-2. 加載的動話？
+2. 加載的動畫？
 
 

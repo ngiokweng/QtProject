@@ -8,6 +8,30 @@
 
 NetworkManager::NetworkManager(QObject *parent) : QObject(parent){}
 
+void NetworkManager::showLoadDialog(){
+    loadDialog = new QDialog();
+    QLabel *label = new QLabel(loadDialog);
+    label->setText("請耐心地等待~~~");
+    label->setFont(QFont("Adobe 繁黑體 Std B",30));
+    label->adjustSize();
+    loadDialog->setAttribute(Qt::WA_DeleteOnClose); //在關閉對話框時釋放內存
+    loadDialog->adjustSize();
+    loadDialog->setWindowTitle("加載中...");
+    loadDialog->show();
+
+    /*以下三行代碼：
+     * - 是一段小小的阻塞函數
+     * - 為了讓loadDialog這個非模態對話框有【show出來】的時間。若不這樣做，dialog上的字會延遲顯示出來
+    */
+    QEventLoop loop;
+    QTimer::singleShot(10,&loop,&QEventLoop::quit);
+    loop.exec();
+}
+
+void NetworkManager::closeLoadDialog(){
+    loadDialog->close();
+}
+
 QByteArray NetworkManager::get(QString url){
     /*網路請求相關操作*/
     QNetworkAccessManager *manager = new QNetworkAccessManager();
@@ -17,7 +41,9 @@ QByteArray NetworkManager::get(QString url){
 
     QEventLoop eventLoop;
     connect(reply, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
+
     eventLoop.exec();  //阻塞函數，直至請求完成
+
 
     QByteArray data = reply->readAll();
 

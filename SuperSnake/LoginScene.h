@@ -29,7 +29,6 @@ private:
     QLineEdit* userIdInput; //帳號輸入框
     QLineEdit* userPwdInput; //密碼輸入框
     QComboBox* serverSelect;  //Server選擇框
-
 };
 
 #endif // LOGINSCENE_H

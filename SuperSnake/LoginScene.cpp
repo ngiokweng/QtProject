@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QFile>
 #include "User.h"
-
+#include "NetworkManager.h"
 
 LoginScene::LoginScene(QWidget *parent,int w,int h) : BaseScene(parent,w,h)
 { 
@@ -31,23 +31,29 @@ void LoginScene::regAccount(){
         return;
     }
 
+    NetworkManager nw;
 
     //返回true代表注冊驗證成功
     bool ret;
     if(serverIndex == 0){ //代表本地
         ret = User::createLocalAccount(userName,userId,userPwd);
     }else{  //代表網路JSON
+        nw.showLoadDialog();
         ret = User::createWebAccount(userName,userId,userPwd);
+
     }
     if(!ret){
         QString serverName = (serverIndex == 0)?"本地":"網路JSON";
         QMessageBox::critical (this,"錯誤",QString("帳號/用戶名已存在於【%1】！").arg(serverName));
         return;
     }
-    QMessageBox::information(this,"恭喜~~~","注冊成功！！");
 
     /* 注冊成功後，先記錄當前用戶信息，再返回【菜單界面】 */
     (serverIndex == 0)?User::setCurrentUser(userName,userId):User::setCurrentUser_Web(userName,userId);
+
+    nw.closeLoadDialog();
+    QMessageBox::information(this,"恭喜~~~","注冊成功！！");
+
     emit this->backToMenu();
     this->close();
 
@@ -64,24 +70,29 @@ void LoginScene::loginAccount(){
         return;
     }
 
+    NetworkManager nw;
     //返回true代表登錄驗證成功
     bool ret;
     if(serverIndex == 0){
         ret = User::loginLoaclAccount(userId,userPwd);
     }else{
+        nw.showLoadDialog();
         ret = User::loginWebAccount(userId,userPwd);
+
     }
 
     if(!ret){
         QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
         return;
     }
-    QMessageBox::information(this,"恭喜~~~","登錄成功！！");
     //記錄當前用戶信息
     if(serverIndex == 0)
         User::setCurrentUser(nullptr,userId);
     else
         User::setCurrentUser_Web(nullptr,userId);
+
+    nw.closeLoadDialog(); //關閉加載對話框
+    QMessageBox::information(this,"恭喜~~~","登錄成功！！");
     emit this->backToMenu();
     this->close();
 

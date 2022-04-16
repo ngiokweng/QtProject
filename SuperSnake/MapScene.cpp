@@ -194,11 +194,17 @@ void MapScene::onGameRunning(){
     if(isSnakeDead(snakeCoords,snakeSize,snakeNum)){
         gameTimer->stop();
         QString server = User::getCurrentServer();
+
+        NetworkManager nw;
+
         bool ret;
-        if(server == "local")
+        if(server == "local"){
             ret = updateRankList();
-        else
+        }
+        else{
+            nw.showLoadDialog();
             ret = updateRankList(webJsonUrl_RL);
+        }
 
         QString resultStr = QString("你的分數為：%1").arg(score);
         if(!ret){
@@ -208,6 +214,7 @@ void MapScene::onGameRunning(){
         }
         /* 注：QMessageBox要放在initMap()的之後，因為它是模態對話框，會阻塞進程，從而導致一些bug */
         this->initMap();
+        nw.closeLoadDialog();
         QMessageBox::information(this,"遊戲結束",resultStr);
     }
 

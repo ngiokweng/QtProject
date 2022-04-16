@@ -17,11 +17,17 @@
 RankListScene::RankListScene(QWidget *parent,int width,int height) : BaseScene(parent,width,height)
 {
     QString server = User::getCurrentServer();
-    if(server == "local")
+    NetworkManager nw;
+    if(server == "local"){
         getRankInfo();
-    else
+    }
+    else{
+        nw.showLoadDialog();
         getRankInfo(webJsonUrl_RL);
+    }
+    nw.closeLoadDialog();
     init();
+
 }
 
 //獲取所有排行榜信息
