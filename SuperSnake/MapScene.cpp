@@ -202,7 +202,7 @@ void MapScene::onGameRunning(){
             ret = updateRankList();
         }
         else{
-            nw.showLoadDialog();
+            nw.createLoadDialog();
             ret = updateRankList(webJsonUrl_RL);
         }
 
@@ -214,8 +214,11 @@ void MapScene::onGameRunning(){
         }
         /* 注：QMessageBox要放在initMap()的之後，因為它是模態對話框，會阻塞進程，從而導致一些bug */
         this->initMap();
-        nw.closeLoadDialog();
+
+        if(server == "web")nw.closeLoadDialog();
+
         QMessageBox::information(this,"遊戲結束",resultStr);
+
     }
 
 

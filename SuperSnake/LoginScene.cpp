@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QFile>
 #include "User.h"
-#include "NetworkManager.h"
+
 
 LoginScene::LoginScene(QWidget *parent,int w,int h) : BaseScene(parent,w,h)
 { 
@@ -31,27 +31,35 @@ void LoginScene::regAccount(){
         return;
     }
 
-    NetworkManager nw;
 
-    //返回true代表注冊驗證成功
-    bool ret;
+    //返回TRUE代表注冊驗證成功
+    State ret;
     if(serverIndex == 0){ //代表本地
         ret = User::createLocalAccount(userName,userId,userPwd);
     }else{  //代表網路JSON
-        nw.showLoadDialog();
+        if(!nw->isDialogCreate()) //當【加載對話框】未被創建過時才調用nw->createLoadDialog來創建並顯示
+            nw->createLoadDialog();
+        else  //當【加載對話框】已經創建，則使用nw->showLoadDialog()來直接顯示
+            nw->showLoadDialog();
         ret = User::createWebAccount(userName,userId,userPwd);
 
     }
-    if(!ret){
+    if(ret == ERROR){
+        QMessageBox::critical (this,"錯誤",QString("網路請求失敗，請稍後再嘗試"));
+        if(serverIndex == 1)nw->hideLoadDialog(); //關閉加載對話框
+        return;
+    }
+    if(ret == FALSE){
         QString serverName = (serverIndex == 0)?"本地":"網路JSON";
         QMessageBox::critical (this,"錯誤",QString("帳號/用戶名已存在於【%1】！").arg(serverName));
+        if(serverIndex == 1)nw->hideLoadDialog(); //關閉加載對話框
         return;
     }
 
     /* 注冊成功後，先記錄當前用戶信息，再返回【菜單界面】 */
     (serverIndex == 0)?User::setCurrentUser(userName,userId):User::setCurrentUser_Web(userName,userId);
 
-    nw.closeLoadDialog();
+    if(serverIndex == 1)nw->closeLoadDialog();
     QMessageBox::information(this,"恭喜~~~","注冊成功！！");
 
     emit this->backToMenu();
@@ -70,28 +78,40 @@ void LoginScene::loginAccount(){
         return;
     }
 
-    NetworkManager nw;
-    //返回true代表登錄驗證成功
-    bool ret;
+    //返回TRUE代表登錄驗證成功
+    State ret;
     if(serverIndex == 0){
         ret = User::loginLoaclAccount(userId,userPwd);
     }else{
-        nw.showLoadDialog();
+
+        if(!nw->isDialogCreate()) //當【加載對話框】未被創建過時才調用nw->createLoadDialog來創建並顯示
+            nw->createLoadDialog();
+        else  //當【加載對話框】已經創建，則使用nw->showLoadDialog()來直接顯示
+            nw->showLoadDialog();
+
         ret = User::loginWebAccount(userId,userPwd);
 
     }
 
-    if(!ret){
-        QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
+    if(ret == ERROR){
+        QMessageBox::critical (this,"錯誤",QString("網路請求失敗，請稍後再嘗試"));
+        if(serverIndex == 1)nw->hideLoadDialog(); //關閉加載對話框
         return;
     }
+
+    if(ret == FALSE){
+        QMessageBox::critical (this,"錯誤","帳戶/密碼有誤！");
+        if(serverIndex == 1)nw->hideLoadDialog(); //關閉加載對話框
+        return;
+    }
+
     //記錄當前用戶信息
     if(serverIndex == 0)
         User::setCurrentUser(nullptr,userId);
     else
         User::setCurrentUser_Web(nullptr,userId);
 
-    nw.closeLoadDialog(); //關閉加載對話框
+    if(serverIndex == 1)nw->closeLoadDialog(); //關閉加載對話框
     QMessageBox::information(this,"恭喜~~~","登錄成功！！");
     emit this->backToMenu();
     this->close();
@@ -172,4 +192,6 @@ void LoginScene::initScene(){
     serverSelect->addItem("網路伺服器"); //網路Server的【排行榜、帳號】存在網路JSON中
     serverSelect->adjustSize();
     serverSelect->setCurrentIndex(0); //設置默認值
+
+    nw = new NetworkManager(this);
 }

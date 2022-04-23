@@ -4,7 +4,7 @@
 #include "BaseScene.h"
 #include <QLineEdit>
 #include <QComboBox>
-
+#include "NetworkManager.h"
 
 
 class LoginScene : public BaseScene
@@ -29,6 +29,7 @@ private:
     QLineEdit* userIdInput; //帳號輸入框
     QLineEdit* userPwdInput; //密碼輸入框
     QComboBox* serverSelect;  //Server選擇框
+    NetworkManager* nw;
 };
 
 #endif // LOGINSCENE_H

@@ -10,7 +10,6 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QEventLoop>
-
 #include "NetworkManager.h"
 
 
@@ -212,19 +211,22 @@ QString User::getCurrentServer(){
     return jsonObj["server"].toString();
 }
 
-bool User::createWebAccount(QString userName,QString userId,QString userPwd){
+State User::createWebAccount(QString userName,QString userId,QString userPwd){
     QByteArray responseData = NetworkManager::get(webJsonUrl_AC);  //發送get請求，取得所有數據
+
+    //數據請求失敗時
+    if(responseData == "")return ERROR;
 
     /*JSON相關操作：將請求過來的數據轉為JSON格式，然後再進行處理*/
     QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
     QJsonObject jsonObj = jsonDoc.object();
 
     //判斷用戶ID是否已存在於【網路Server】
-    if(jsonObj.contains(userId))return false;
+    if(jsonObj.contains(userId))return FALSE;
 
     //判斷用戶名是否已存在於【網路Server】
     for(auto& key:jsonObj.keys()){
-        if(jsonObj[key].toObject()["userName"].toString() == userName)return false;
+        if(jsonObj[key].toObject()["userName"].toString() == userName)return FALSE;
     }
 
     //創建一個新用戶於【網路Server】
@@ -238,21 +240,25 @@ bool User::createWebAccount(QString userName,QString userId,QString userPwd){
 
     NetworkManager::put(webJsonUrl_AC,jsonDoc); //發送put請求，更新數據
 
-    return true;
+    return TRUE;
 }
 
-bool User::loginWebAccount(QString userId,QString userPwd){
+State User::loginWebAccount(QString userId,QString userPwd){
 
     QByteArray responseData = NetworkManager::get(webJsonUrl_AC);
+
+    //數據請求失敗時
+    if(responseData == "")return ERROR;
+
     /*JSON相關操作：將請求過來的數據轉為JSON格式，然後再進行處理*/
     QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
     QJsonObject jsonObj = jsonDoc.object();
 
     //判斷帳號是否存在於【網路Server】，若存在則判斷密碼是否正確
     if(jsonObj.contains(userId)){
-        if(jsonObj[userId].toObject()["userPwd"] == userPwd)return true;
+        if(jsonObj[userId].toObject()["userPwd"] == userPwd)return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 

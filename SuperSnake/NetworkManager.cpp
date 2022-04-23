@@ -5,10 +5,9 @@
 #include <QEventLoop>
 #include "data.h"
 
+NetworkManager::NetworkManager(QObject *parent) : QObject(parent),loadDialog(nullptr){}
 
-NetworkManager::NetworkManager(QObject *parent) : QObject(parent){}
-
-void NetworkManager::showLoadDialog(){
+void NetworkManager::createLoadDialog(){
     loadDialog = new QDialog();
     QLabel *label = new QLabel(loadDialog);
     label->setText("請耐心地等待~~~");
@@ -32,6 +31,17 @@ void NetworkManager::closeLoadDialog(){
     loadDialog->close();
 }
 
+void NetworkManager::showLoadDialog(){
+    loadDialog->show();
+}
+void NetworkManager::hideLoadDialog(){
+    loadDialog->hide();
+}
+
+bool NetworkManager::isDialogCreate(){
+    return (this->loadDialog == nullptr)?false:true;
+}
+
 QByteArray NetworkManager::get(QString url){
     /*網路請求相關操作*/
     QNetworkAccessManager *manager = new QNetworkAccessManager();
@@ -43,7 +53,6 @@ QByteArray NetworkManager::get(QString url){
     connect(reply, &QNetworkReply::finished, &eventLoop,&QEventLoop::quit);
 
     eventLoop.exec();  //阻塞函數，直至請求完成
-
 
     QByteArray data = reply->readAll();
 

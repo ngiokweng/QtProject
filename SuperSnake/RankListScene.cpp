@@ -22,10 +22,10 @@ RankListScene::RankListScene(QWidget *parent,int width,int height) : BaseScene(p
         getRankInfo();
     }
     else{
-        nw.showLoadDialog();
+        nw.createLoadDialog();
         getRankInfo(webJsonUrl_RL);
     }
-    nw.closeLoadDialog();
+    if(server == "web")nw.closeLoadDialog();
     init();
 
 }
