@@ -15,7 +15,7 @@ public:
     MenuScene(QWidget *parent = nullptr,int w = 800,int h = 600);
     ~MenuScene();
     void initMenu(); //初始化菜單選項
-    void createBtn(QPushButton*& btn,QSize btnSize,int loc_y,int offset); //創建菜單界面的按鈕
+    void setBtn(QPushButton*& btn,QSize btnSize,int loc_y,int offset); //設置按鈕的基本樣式及位置
     void enterLoginScene(); //進入【登錄界面】
 
 public slots:

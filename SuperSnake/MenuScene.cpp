@@ -101,8 +101,8 @@ void MenuScene::showSelfInfo(){
     selfInfoScene->show();
 }
 
-//創建菜單界面的按鈕
-void MenuScene::createBtn(QPushButton*& btn,QSize btnSize,int loc_y,int offset){
+//設置按鈕的基本樣式及位置
+void MenuScene::setBtn(QPushButton*& btn,QSize btnSize,int loc_y,int offset){
     btn->resize(btnSize);
     btn->move(width/2-btn->geometry().width()/2,loc_y+offset);
 }
@@ -137,7 +137,7 @@ void MenuScene::initMenu(){
     QPushButton* startBtn = new QPushButton("開始遊戲",this);
 
     startBtn->setIcon(QIcon("./img/start.png"));
-    createBtn(startBtn,btn_defaultSize,title->geometry().y()+title->geometry().height(),30);
+    setBtn(startBtn,btn_defaultSize,title->geometry().y()+title->geometry().height(),30);
     //連接遊戲場景、遊戲參數設置的窗口
     connect(startBtn,&QPushButton::clicked,this,&MenuScene::enterSettingScene);
 
@@ -145,7 +145,7 @@ void MenuScene::initMenu(){
     QPushButton* rankBtn = new QPushButton("排行榜",this);
 
     rankBtn->setIcon(QIcon("./img/rank.png"));
-    createBtn(rankBtn,btn_defaultSize,startBtn->geometry().y()+startBtn->geometry().height(),30);
+    setBtn(rankBtn,btn_defaultSize,startBtn->geometry().y()+startBtn->geometry().height(),30);
     connect(rankBtn,&QPushButton::clicked,this,&MenuScene::enterRankListScene);
 
 
@@ -153,7 +153,7 @@ void MenuScene::initMenu(){
     QPushButton* selfInfoBtn = new QPushButton("個人信息",this);
 
     selfInfoBtn->setIcon(QIcon("./img/selfInfo.png"));
-    createBtn(selfInfoBtn,btn_defaultSize,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
+    setBtn(selfInfoBtn,btn_defaultSize,rankBtn->geometry().y()+rankBtn->geometry().height(),30);
     connect(selfInfoBtn,&QPushButton::clicked,this,&MenuScene::showSelfInfo);
 
 
@@ -161,7 +161,7 @@ void MenuScene::initMenu(){
     QPushButton* logoutBtn = new QPushButton("登出",this);
     logoutBtn->setIcon(QIcon("./img/leave.png"));
 
-    createBtn(logoutBtn,btn_defaultSize,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
+    setBtn(logoutBtn,btn_defaultSize,selfInfoBtn->geometry().y()+selfInfoBtn->geometry().height(),30);
     connect(logoutBtn,&QPushButton::clicked,this,&MenuScene::logout);
 
 }

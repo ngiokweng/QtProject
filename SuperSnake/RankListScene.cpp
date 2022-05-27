@@ -13,6 +13,7 @@
 #include <algorithm>
 #include "User.h"
 #include "NetworkManager.h"
+#include <QDebug>
 
 RankListScene::RankListScene(QWidget *parent,int width,int height) : BaseScene(parent,width,height)
 {

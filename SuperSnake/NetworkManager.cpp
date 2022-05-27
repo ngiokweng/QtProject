@@ -9,6 +9,7 @@ NetworkManager::NetworkManager(QObject *parent) : QObject(parent),loadDialog(nul
 
 void NetworkManager::createLoadDialog(){
     loadDialog = new QDialog();
+    loadDialog->setWindowFlag(Qt::WindowCloseButtonHint, false);  //禁用loadDialog右上角的關閉按鈕
     QLabel *label = new QLabel(loadDialog);
     label->setText("請耐心地等待~~~");
     label->setFont(QFont("Adobe 繁黑體 Std B",30));

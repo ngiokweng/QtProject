@@ -70,7 +70,7 @@ void SettingScene::init(){
     snakeSizeSelect->setCurrentIndex(15); //設置默認值
     int snakeSize = snakeSizeSelect->currentText().toInt();
 
-    // 當sizeSelect的選項改變時，會觸發onSizeSelectChange槽函數
+    // 當snakeSizeSelect的選項改變時，會觸發onSizeSelectChange槽函數
     connect(snakeSizeSelect,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),this,&SettingScene::onSizeSelectChange);
 
     /*** 【地圖列數】的相關控件設置 ***/
