@@ -7,3 +7,4 @@ __路徑中絕對不可以出現中文__
 - [五子棋項目(含AI對戰)](https://github.com/ngiokweng/QtProject/tree/master/Gobang)
 - [貪食蛇項目](https://github.com/ngiokweng/QtProject/tree/master/Snake)
 - [重複文件檢測工具](https://github.com/ngiokweng/QtProject/tree/master/CheckFileRepeat)
+- [C++課程設計-《SuperSnake》](https://github.com/ngiokweng/QtProject/tree/master/SuperSnake)
